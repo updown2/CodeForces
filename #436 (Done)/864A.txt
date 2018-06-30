@@ -1,0 +1,44 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+const int MAXN=100000, INF=9000000000000000000;
+///500,000,000
+int N;
+map<int, int> have;
+set<int> vals;
+set<int>::iterator it, it2;
+
+void no() {
+    w<< "NO"<<e;
+    exit(0);
+}
+
+main() {
+    //ifstream cin("test.in");
+    ios_base::sync_with_stdio(0); cin.tie(0);
+    cin >> N;
+    ffi {
+        int a; cin >> a;
+        vals.insert(a);
+        if (have.find(a) == have.end()) have[a] = 1;
+        else have[a] ++;
+    }
+    if (vals.size() != 2) no();
+    it = vals.begin();
+    it2 = vals.begin();
+    it2++;
+    if (have[(*it)] != have[(*it2)]) no();
+    w<< "YES"<<e<<(*it) s (*it2)<<e;
+}

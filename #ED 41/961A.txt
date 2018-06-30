@@ -1,0 +1,26 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e endl
+#define pb push_back
+#define int ll
+//500,000,000 operations
+//Global Variables
+int N, M, cnt[1000], out = 1000000;
+
+main() {
+	//ifstream cin ("test.in");
+	//ofstream cout ("test.out");
+    cin >> N >> M;
+    ffj {
+        int a; cin >> a; a--; cnt[a]++;
+    }
+    ffi out = min(out, cnt[i]);
+    w<< out<<e;
+}

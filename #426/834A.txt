@@ -1,0 +1,41 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define s <<" "<<
+#define w cout<<
+#define e <<endl
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+//Global Variables
+char st, en;
+int N;
+map<char, int> val;
+bool cw=false, ccw=false;
+
+main() {
+    //ifstream cin ("test.in");
+	//ofstream cout ("test.out");
+	val['^'] = 0;
+	val['>'] = 1;
+	val['v'] = 2;
+	val['<'] = 3;
+	cin >> st >> en >> N;
+	N %= 4;
+	int a = val[st];
+	int b = val[en];
+	//w a s b s N e;
+
+	if ((a+N)%4 == b) cw = true;
+	if ((4+a-N)%4 == b) ccw = true;
+	//w cw s ccw e;
+	if (cw && ccw) w "undefined" e;
+	else if (cw) w "cw" e;
+	else if (ccw) w "ccw" e;
+	else w "undefined" e;
+}

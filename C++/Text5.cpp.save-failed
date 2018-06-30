@@ -1,0 +1,55 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+const int MAXN=100002, INF=10000000000;
+///500,000,000
+int Q, N = 60, shift[60], p2[60];
+
+main() {
+	ifstream cin("test.in");
+	ios_base::sync_with_stdio(0); cin.tie(0);
+	cin >> Q;
+	p2[0] = 1;
+	For (i, 1, 60) p2[i] = 2*p2[i-1];
+	For (q, 0, Q) {
+        int a, b; cin >> a >> b;
+        int x = log2(b);
+        if (a == 1) {
+            int c; cin >> c;
+            c %= p2[x];
+            shift[x] += c;
+            shift[x] += p2[x];
+            shift[x] %= p2[x];
+        }
+        else if (a == 2) {
+            int c; cin >> c;
+            For (i, x, 60) {
+                c %= p2[i];
+                shift[i] += c;
+                shift[i] += p2[i];
+                c *= 2;
+                //shift[i] += p2[x];
+                shift[i] %= p2[i];
+            }
+        }
+        else {
+            int loc = (b + shift[x])%p2[x] + p2[x];
+        w<< x s shift[x] s p2[x] s loc<<e;
+            while (b != 1) {
+                break;
+            }
+        }
+	}
+}

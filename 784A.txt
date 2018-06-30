@@ -1,0 +1,30 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, N)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e endl
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+//500,000,000 operations
+//Global Variables
+int a;
+int have[30] = {4, 22, 27, 58, 85, 94, 121, 166, 202, 265, 274, 319, 346, 355, 378, 382, 391, 438, 454, 483, 517, 526, 535, 562, 576, 588, 627, 634, 636, 645};
+
+
+int main() {
+	//ifstream cin ("test.in");
+	//ifstream cin (".in");
+	//ofstream cout (".out");
+	cin >> a;
+	w<< have[a-1]<<e;
+	
+	
+	return 0;
+}

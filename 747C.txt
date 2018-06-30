@@ -1,0 +1,53 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(ll i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define s <<" "<<
+#define w cout
+#define e endl
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+//500,000,000 operations
+//Global Variables
+int N, M;
+int server[100];
+
+int main() {
+	//ifstream cin ("test.in");
+	//ofstream cout ("roboherd.out");
+	
+	cin >> N >> M;
+	
+	ffi server[i] = 0;
+	
+	ffj {
+		int time, needed, total; cin >> time >> needed >> total;
+		int free = 0;
+		ffi {
+			if (server[i] <= time) free++;
+		}
+		if (free < needed) w<<-1<<e;
+		else {
+			int sum = 0;
+			ffi {
+				if (server[i] <= time) {
+					server[i] = time+total;
+					sum += i+1;
+					needed--;
+					if (needed == 0) break;
+				}
+			}
+			w << sum << e;
+		}
+	}
+	
+	
+	
+	
+	return 0;
+}
+

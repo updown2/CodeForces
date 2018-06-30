@@ -1,0 +1,59 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, N)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+const int MAXN=100001, INF=2000000000000000000;
+///500,000,000
+int Q, len[MAXN];
+string f0 = "What are you doing at the end of the world? Are you busy? Will you save us?";
+string fbegin = "What are you doing while sending \"";
+string fmid = "\"? Are you busy? Will you send \"";
+string fend = "\"?";
+
+char query(int N, int K) {
+    //printf("%I64d %I64d\n", N, K);
+    if (K > len[N]) return '.';
+
+    if (N == 0) return f0[K-1];
+
+    if (K <= fbegin.length()) return fbegin[K-1];
+    K -= fbegin.length();
+
+    if (K <= len[N-1]) return query(N-1, K);
+    K -= len[N-1];
+
+    if (K <= fmid.length()) return fmid[K-1];
+    K -= fmid.length();
+
+    if (K <= len[N-1]) return query(N-1, K);
+    K -= len[N-1];
+
+    return fend[K-1];
+}
+
+main() {
+	//ifstream cin ("test.in");
+	ios_base::sync_with_stdio(0); cin.tie(0);
+	len[0] = f0.length();
+	For (i, 1, 56) len[i] = fbegin.length()+len[i-1]+fmid.length()+len[i-1]+fend.length();
+	For (i, 56, MAXN) len[i] = INF;
+
+	cin >> Q;
+	For (q, 0, Q) {
+	    int N, K; cin >> N >> K;
+	    //printf("looking at %I64d %I64d\n", N, K);
+	    w<< query(N, K);
+	}
+	w<<e;
+}

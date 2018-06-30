@@ -1,0 +1,45 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define int ll
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define w cout
+#define e "\n"
+#define s <<" "<<
+#define a first
+#define b second
+#define pb push_back
+#define pf push_front
+#define mp make_pair
+const int MAXN = 100000, INF=10000000;
+////////////////////////////////////////////////////////
+int N, a1[MAXN], a2[MAXN], out, base;
+multiset<int> piles;
+multiset<int>::iterator it;
+
+main() {
+    //ifstream cin("test.in");
+    cin >> N;
+    ffi cin >> a1[i];
+    ffi cin >> a2[i];
+    ffi {
+        piles.insert(a1[i]+base);
+        out = 0;
+        base += a2[i];
+
+        while (!piles.empty()) {
+            it = piles.begin();
+            if ((*it) > base) break;
+            out += (*it)+a2[i]-base;
+            //w<< i s (*it) s a2[i] s base<<e;
+            piles.erase(it);
+        }
+        out += piles.size() * a2[i];
+        w<< out<<" ";
+
+        //w<< "pile"; for (it = piles.begin(); it != piles.end(); it++) w s (*it)-base; w<<e;
+    }
+    w<<e;
+}

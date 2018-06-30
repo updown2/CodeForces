@@ -1,0 +1,63 @@
+/*
+ID: riya.ar1
+PROG: frameup
+LANG: C++11
+*/
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define s <<" "<<
+#define w cout
+#define e endl
+#define p prllf
+#define r scanf
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+//500,000,000 operations
+//Global Variables
+int N;
+string inp;
+string out = "";
+int at, loc1, loc2;
+
+int main() {
+	//ifstream cin ("test.in");
+	//ofstream cout ("frameup.out");
+	
+	cin >> N >> inp;
+	ffi out += " ";
+	
+	
+	loc2 = N/2;
+	loc1 = loc2-1;
+	
+	if (N%2 == 1) at = 0;
+	else at = -1;
+	
+	ffi {
+		if (at == 0) out[loc2] = inp[i];
+		else out[loc1] = inp[i];
+		
+		if (at == 0) {
+			at = -1;
+			loc2++;
+		}
+		else {
+			at = 0;
+			loc1--;
+		}
+	}
+	
+	w << out << e;
+	
+	
+	
+	return 0;
+	
+}
+

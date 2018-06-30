@@ -1,0 +1,77 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(ll i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define s <<" "<<
+#define w cout
+#define e endl
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+//500,000,000 operations
+//Global Variables
+string inp;
+int at = 0;
+vector<string> out[1000000];
+int max_level = 0;
+
+void search(int level) {
+	
+	max_level = max(max_level, level);
+	
+	//w<<level s at<<e;
+	
+	string word = "";
+	while (inp[at] != ',') {
+		word += inp[at];
+		at++;
+	}at++;
+	out[level].pb(word);
+	//w<< word<<e;
+	
+	int num = 0;
+	while (inp[at] != ',') {
+		num *= 10;
+		num += (inp[at]-'0');
+		at++;
+	}at++;
+	
+	//w<<num<<e;
+	
+	For (i, 0, num) {
+		search(level+1);
+	}
+	
+	
+}
+
+
+int main() {
+	//ifstream cin ("test.in");
+	//ofstream cout ("roboherd.out");
+	
+	cin >> inp;
+	inp += ",";
+	//w<<inp.length() << e;
+	while (at < inp.length()-3) {
+		search(0);
+	}
+
+	
+	
+	w<< max_level+1 << e;
+	For (i, 0, max_level+1) {
+		For (j, 0, out[i].size()) {
+			w<< out[i][j];
+			if (j != out[i].size()-1) w<< " ";
+		}
+		w<<e;
+	}
+	
+	
+	return 0;
+}
+

@@ -1,0 +1,48 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, N)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+//#define int ll
+const int MAXN=100000, INF=1000000000;
+///500,000,000
+int N;
+double out = 0.0;
+vector<int> adj[MAXN];
+bool vis[MAXN];
+
+void go(int at, double prob, int dep) {
+    if (vis[at]) return;
+    ///w<< at<<e;
+    vis[at] = true;
+    int bel = 0;
+    for (int i:adj[at]) {
+        if (!vis[i]) bel++;
+    }
+    for (int i:adj[at]) {
+        if (!vis[i]) go(i, prob/bel, dep+1);
+    }
+    //w<< at s bel<<e;
+    if (bel == 0) out += prob*dep;
+}
+
+main() {
+    //ifstream cin ("test.in");
+    cin >> N;
+    For (i, 1, N) {
+        int a, b; cin >> a >> b; a--; b--;
+        adj[a].pb(b);
+        adj[b].pb(a);
+    }
+    go(0, 1.0, 0);
+    w<< fixed<<setprecision(7) <<out<<e;
+}

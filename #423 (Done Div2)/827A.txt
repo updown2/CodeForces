@@ -1,0 +1,44 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+const int MAXN=2000000, INF=10000000000;
+///500,000,000
+int N, siz, goTo[MAXN];
+char ans[MAXN];
+
+main() {
+    //ifstream cin("test.in");
+    ios_base::sync_with_stdio(0); cin.tie(0);
+    For (i, 0, MAXN) ans[i] = 'a', goTo[i] = i+1;
+    goTo[MAXN-1] = MAXN-1;
+    cin >> N;
+    ffi {
+        string a; int b; cin >> a >> b;
+        For (j, 0, b) {
+            int c; cin >> c; c--;
+            int k=c;
+            while (k < c+a.length() && k >= 0) {
+                ans[k] = a[k-c];
+                if (k != 0) goTo[k-1] = goTo[c+a.length()-1];
+                int x = goTo[k];
+                goTo[k] = goTo[c+a.length()-1];
+                k = x;
+            }
+            //For (k, c, c+a.length()) ans[k] = a[k-c];
+            siz = max(siz, (ll) (c+a.length()));
+        }
+    }
+    For (i, 0, siz) w<< ans[i]; w<<e;
+}

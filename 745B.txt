@@ -1,0 +1,63 @@
+/*
+ID: riya.ar1
+PROG: frameup
+LANG: C++11
+*/
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define s <<" "<<
+#define w cout
+#define e endl
+#define p prllf
+#define r scanf
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+//500,000,000 operations
+//Global Variables
+int N, M;
+char grid[500][500];
+int high, low, rig, lef;
+
+int main() {
+	//ifstream cin ("test.in");
+	//ofstream cout ("frameup.out");
+	
+	cin >> N >> M;
+	
+	high = N;
+	low = 0;
+	rig = 0;
+	lef = M;
+	ffi {
+		ffj {
+			cin >> grid[i][j];
+			if (grid[i][j] == 'X') {
+				high = min(high, i);
+				low = max(low, i);
+				rig = max(rig, j);
+				lef = min(lef, j);
+			}
+		}
+	}
+	For (i, high, low+1) {
+		For (j, lef, rig+1) {
+			if (grid[i][j] == '.') {
+				w<<"NO"<<e;
+				return 0;
+			}
+		}
+	}
+	
+	
+	w<<"YES"<<e;
+	
+	return 0;
+	
+}
+

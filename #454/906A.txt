@@ -1,0 +1,59 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+const int MAXN=1500, INF=1000000000000000000;
+///500,000,000
+int N;
+set<char> bad;
+set<char>::iterator it, it2;
+
+main() {
+    //ifstream cin("test.in");
+    //ifstream cin("pushabox.in");ofstream cout("pushabox.out");
+    ios_base::sync_with_stdio(0); cin.tie(0);
+    cin >> N;
+    For (i, 0, 26) bad.insert('a'+i);
+    int i = 0;
+    while (bad.size() != 1 && i < N-1) {
+        char a; string b; cin >> a >> b;
+        if (a == '.') { ///Remove letters from bad
+            For (j, 0, b.length()) {
+                it = bad.find(b[j]);
+                if (it != bad.end()) bad.erase(it);
+            }
+        }
+        else if (a == '?') {
+            it = bad.find(b[0]);
+            if (it != bad.end()) bad.erase(it);
+        }
+        else {
+            set<char> save;
+            vector<char> rem;
+            For (j, 0, b.length()) save.insert(b[j]);
+            for (it = bad.begin(); it != bad.end(); it++) {
+                it2 = save.find(*it);
+                if (it2 == save.end()) rem.pb(*it);
+            }
+            for (char ex:rem) bad.erase(ex);
+        }
+        i++;
+    }
+    int out = 0;
+    for (; i<N-1; i++) {
+        char a; string b; cin >> a >> b;
+        if (a == '!' || a == '?') out++;
+    }
+    w<< out<<e;
+}

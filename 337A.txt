@@ -1,0 +1,32 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(ll i=a; i<b; i++)
+#define pb push_back
+//500,000,000 operations
+
+//Global Variables
+ll N, M;
+ll nums[50];
+
+int main() {
+	//ifstream cin ("test.in");
+	//ofstream cout ("test.out");
+	
+	cin >> N >> M;
+	For (i, 0, M) cin >> nums[i];
+	
+	sort(nums, nums+M);
+	
+	ll out = nums[M-1]-nums[0];
+	For (i, 0, M-N+1) {
+		out = min(out, nums[i+N-1]-nums[i]);
+	}
+	
+	cout << out << endl;
+	
+	
+	return 0;
+
+}
+

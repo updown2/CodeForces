@@ -1,0 +1,46 @@
+#include <bits/stdc++.h>
+typedef long long ll;
+using namespace std;
+#define For(i, a, b) for (int i=a; i<b; i++)
+#define ffi For (i, 0, N)
+#define ffj For (j, 0, N)
+#define ffa ffi ffj
+#define w cout
+#define e endl
+#define s << " " <<
+#define pb push_back
+#define int ll
+//500,000,000
+//Variables
+int N, out = 0, at = 0;
+int good = 1;
+vector<int> have;
+set<int> use;
+
+
+main() {
+    //ifstream cin("test1.in");
+    //freopen ("test1.in","r",stdin);
+    cin >> N;
+    For (i, 0, 2*N) {
+        string a; int b; cin >> a;
+        if (a[0] == 'a') {
+            cin >> b; b--;
+            have.pb(b);
+            use.insert(b);
+        }
+        else {
+            if (have[have.size()-1] == at || good >= have.size()) {}
+            else {
+                out++;
+                good = have.size();
+            }
+            have.erase(have.begin() + (have.size()-1) );
+            use.erase(at);
+            at++;
+            good = min(good, (ll)have.size());
+            good = max(good, (ll)1);
+        }
+    }
+    w<< out<<e;
+}

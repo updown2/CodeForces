@@ -1,0 +1,67 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, 26)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+//#define int ll
+//500,000,000 operations
+const int MAXN = 100000;
+//Global Variables
+ll Q, sum, big;
+double avg = 1000000000;
+multiset<int> S, other;
+multiset<int>::iterator it;
+
+int main() {
+	//ifstream cin ("test.in");
+	ios_base::sync_with_stdio; cin.tie(0);
+	cin >> Q;
+	For (q, 0, Q) {
+		int a; cin >> a;
+		if (a == 2) {w<< fixed << setprecision(6)<<(double)big - avg<<e; continue;}
+		cin >> a;
+		if (a > big) {
+			sum += a-big;
+			if (big != 0) other.insert(big);
+			big = a;
+			avg = sum/ (double) (S.size()+1);
+		}
+		else other.insert(a);
+		
+		if (S.size() > 0) {it = S.end(); it--;}
+		while (S.size() > 0 && (*it) > avg) {
+			sum -= (*it);
+			other.insert(*it);
+			S.erase(it);
+			if (S.size() > 0) {it = S.end(); it--;}
+			avg = sum/ (double) (S.size()+1);
+		}
+		
+		it = other.begin();
+		//w<< "before:" s (*it) s avg<<e;
+		while (other.size() > 0 && (*it) < avg) {
+			//w<< "after:" s (*it) s avg<<e;
+			sum += (*it);
+			S.insert(*it);
+			other.erase(it);
+			it = other.begin();
+			avg = sum/ (double) (S.size()+1);
+		}
+		
+		
+		//w<< "avg:" s avg<<e;
+		//w<< "sum:" s sum<<e;
+		//w<< "S: "; for (it = S.begin(); it != S.end(); it++) w<< (*it)<< " "; w<<e;
+		//w<< "other: "; for (it = other.begin(); it != other.end(); it++) w<< (*it)<< " "; w<<e;
+		//w<< "big:" s big<<e<<e;
+	}
+}

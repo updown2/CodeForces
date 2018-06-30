@@ -1,0 +1,41 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, K)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+const int MAXN=2000, INF=1000000000000000000;
+///500,000,000
+int N, K, a[MAXN], b[MAXN], c[MAXN], out;
+set<int> st, lef;
+set<int>::iterator it;
+
+main() {
+    //ifstream cin("test.in");
+    ios_base::sync_with_stdio(0); cin.tie(0);
+    cin >> N >> K;
+    ffi cin >> a[i];
+    c[0] = a[0]; For (i, 1, N) c[i] = c[i-1]+a[i];
+    ffj cin >> b[j];
+    ffi st.insert(b[0]-c[i]);
+    for (it = st.begin(); it != st.end(); it++) {
+        ///Test if starting one works
+        ffj lef.insert(b[j]);
+        int X = (*it);
+        ffi {
+            X += a[i];
+            if (lef.find(X) != lef.end()) lef.erase(X);
+        }
+        if (lef.size() == 0) out++;
+    }
+    w<< out<<e;
+}

@@ -1,0 +1,35 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(ll i=a; i<b; i++)
+#define pb push_back
+//500,000,000 operations
+
+//Global Variables
+ll N, X;
+ll bad = 0;
+
+int main() {
+	//ifstream cin ("test.in");
+	//ofstream cout ("test.out");
+	
+	cin >> N >> X;
+	
+	For (i, 0, N) {
+		char a;
+		ll b;
+		cin >> a >> b;
+		if (a=='+') X+= b;
+		else {
+			if (X>=b) X-=b;
+			else bad++;
+		}
+	}
+	
+	cout << X << " " << bad << endl;
+	
+	
+	return 0;
+
+}
+

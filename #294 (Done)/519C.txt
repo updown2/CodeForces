@@ -1,0 +1,49 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, N)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+//#define int ll
+const int MAXN=1000000;
+///500,000,000
+int N, M, out, K;
+
+main() {
+	//ifstream cin ("test.in"); //freopen ("test.in","r",stdin);
+	cin >> N >> M;
+	while ( (N >= 2 || M >= 2) && N!=0 && M !=0 ) {
+        if (N > M) {
+            K = min(M, N-M);
+            M -= K;
+            N -= 2*K;
+            out += K;
+        }
+        else if (M > N) {
+            K = min(N, M-N);
+            N -= K;
+            M -= 2*K;
+            out += K;
+        }
+        else {
+            K = N/3;
+            N -= K*3;
+            M -= K*3;
+            out += K*2;
+            if (K == 0) {
+                N -= 2;
+                M -= 1;
+                out++;
+            }
+        }
+	}
+	w<< out<<e;
+}

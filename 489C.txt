@@ -1,0 +1,40 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e endl
+//Global Variables
+int M, S;
+string small = "", big = "";
+char zero = '0';
+bool ch = false;
+int main() {
+    //freopen ("test2.in","r",stdin);
+    //freopen ("test.out","w",stdout);
+    scanf(" %d %d", &M, &S);
+    if (M == 1 && S < 10) {printf("%d %d\n", S, S); return 0;}
+    if (S == 0 || (M == 1 && S >=10)) {printf("-1 -1\n"); return 0;}
+    int need = (S+8)/9;
+    if (need > M) {printf("-1 -1\n"); return 0;}
+
+    if (need < M) {
+        small = "1"; M--; S--;
+        For (i, 0, M-need) small += "0";
+        ch = true;
+    }
+    if (need != 0) small += zero+(S-(need-1)*9);
+    For (i, 1, need) small += "9";
+
+    if (ch) {M++; S++;}
+    need = (S+8)/9;
+    For (i, 1, need) big += "9";
+    if (need != 0) big += zero+(S-(need-1)*9);
+    For (i, need, M) big += "0";
+w<< small s big<<e;
+    //printf("%s %s\n", small, big);
+}

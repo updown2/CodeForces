@@ -1,0 +1,39 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(ll i=a; i<b; i++)
+//500,000,000 operations
+
+
+//Global Variables
+
+
+int main() {
+	//ifstream cin ("test.in");
+	//ofstream cout ("test.out");
+	
+	ll N, D;
+	cin >> N >> D;
+	ll out = 0;
+	ll curr = 0;
+	string in;
+	For (i, 0, D) {
+		cin >> in;
+		bool good;
+		For (j, 0, N) {
+			good = false;
+			if (in[j] == '0') {
+				curr++;
+				good = true;
+				break;
+			}
+		}
+		out = max(out, curr);
+		if (!good) curr = 0;
+	}
+	cout << out << endl;
+	
+	return 0;
+
+}
+

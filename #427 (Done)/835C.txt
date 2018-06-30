@@ -1,0 +1,39 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 1, 101)
+#define ffj For(j, 1, 101)
+#define ffa For(k, 0, C) ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+const int MAXN=101, INF=10000000000;
+///500,000,000
+int N, Q, C, dp[11][MAXN][MAXN];
+
+main() {
+    //ifstream cin("test.in");//freopen("test.in","r",stdin);freopen ("test.out","w",stdout);
+    //ofstream cout("test.in");
+    cin >> N >> Q >> C;
+    C++;
+    For (i, 0, N) {
+        int X, Y, Ci; cin >> X >> Y >> Ci;
+        dp[0][X][Y] += Ci;
+        For (j, 1, 11) Ci++, Ci %= C, dp[j][X][Y] += Ci;
+    }
+    //For (k, 0, C) {ffi {ffj w<<dp[k][i][j]<< " ";w<<e;}w<<e;}
+    ffa dp[k][i][j] += dp[k][i-1][j]+dp[k][i][j-1]-dp[k][i-1][j-1];
+    //For (k, 0, C) {ffi {ffj w<<dp[k][i][j]<< " ";w<<e;}w<<e;}
+
+    For (i, 0, Q) {
+        int T, X1, Y1, X2, Y2; cin >> T >> X1 >> Y1 >> X2 >> Y2;
+        T %= C;
+        w<< dp[T][X2][Y2]-dp[T][X1-1][Y2]-dp[T][X2][Y1-1]+dp[T][X1-1][Y1-1]<<e;
+    }
+}

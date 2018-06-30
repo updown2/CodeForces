@@ -1,0 +1,102 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, N)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+//#define int ll
+const int MAXN=100000;
+///500,000,000
+int N, Q, dep[MAXN], parent[MAXN], ancestor[MAXN][20], nod[MAXN];
+vector<int> adj[MAXN];
+bool vis[MAXN];
+int out;
+
+void dfs(int x, int par) {
+    if (parent[x] != -1) return;
+    parent[x] = par;
+	if (x != 0) dep[x] = dep[par]+1;
+	for (int i:adj[x]) dfs(i, x);
+}
+int LCA(int A, int B) {
+	if (dep[A] > dep[B]) swap(A, B);
+	int d = dep[B] - dep[A];
+	For (i, 0, 18) {
+		if (d&(1<<i) ) B = ancestor[B][i];
+	}
+	if (A == B) return A;
+
+	for (int i=17; i>= 0; i--) {
+		if (ancestor[A][i] != ancestor[B][i]) {
+			A = ancestor[A][i];
+			B = ancestor[B][i];
+		}
+	}
+	return parent[A];
+}
+void go(int at) {
+    if (vis[at]) return;
+    vis[at] = true;
+    nod[at] = 1;
+    for (int i:adj[at]) if (!vis[i]) {
+        go(i);
+        nod[at] += nod[i];
+    }
+}
+int pre(int st, int en) {
+    int d = dep[st]-dep[en]-1;
+    For (i, 0, 18) {if (d&(1<<i) ) st = ancestor[st][i];}
+    return st;
+}
+
+
+main() {
+	//ifstream cin ("test.in"); //freopen ("test.in","r",stdin);
+	cin >> N;
+	ffi parent[i] = -1;
+	For (i, 1, N) {
+		int a, b; cin >> a >> b; a--; b--;
+		adj[a].pb(b);
+		adj[b].pb(a);
+	}
+	dep[0] = 0;
+	dfs(0, 0);
+	go(0);
+
+	//ffi w<< nod[i]<<e;w<<e;
+
+	ffi ancestor[i][0] = parent[i];
+	For (k, 0, 17) ffi ancestor[i][k+1] = ancestor[ancestor[i][k]][k];
+
+	cin >> Q;
+	For (q, 0, Q) {
+	    int a, b;
+	    cin >> a >> b; a--; b--;
+	    if (a == b) {
+            w<< N<<e;
+            continue;
+	    }
+	    if (dep[a] < dep[b]) swap(a, b); ///dep[a] >= dep[b]
+	    int c = LCA(a, b);
+	    int d1 = dep[a]-dep[c];
+	    int d2 = dep[b]-dep[c];
+	    int at=a;
+
+	    if ((d1-d2)%2 == 1) {w<< 0<<e; continue;}
+        int d = (d1 + d2)/2;
+        For (i, 0, 18) {if (d&(1<<i) ) at = ancestor[at][i];}
+
+        ///answer it N-sizeof a tree and b tree
+        if (at == c) out = N-nod[pre(a, at)]-nod[pre(b, at)];
+        else out = nod[at]-nod[pre(a, at)];
+        w<< out<<e;
+	}
+}

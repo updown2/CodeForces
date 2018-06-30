@@ -1,0 +1,46 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, K)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+const int MAXN=10000000, INF=1000000000, MOD=1000000007 ;
+///500,000,000
+int N, at[4] = {1,}, mul[25][4][4] = {{{0,1,1,1}, {1,0,1,1}, {1,1,0,1}, {1,1,1,0}},};
+
+void update(int k) {
+    int use[4]={0,0,0,0};
+    For (i, 0, 4) {
+        For (j, 0, 4) {
+            use[i] += at[j]*mul[k][i][j];
+            use[i] %= MOD;
+        }
+    }
+    For (i, 0, 4) at[i] = use[i];
+}
+
+main() {
+	//ifstream cin ("test.in");
+	cin >> N;
+	For (i, 1, 25) For (j, 0, 4) For (k, 0, 4) {
+        int curr = 0;
+        For (a, 0, 4) curr += mul[i-1][j][a]*mul[i-1][a][k], curr %= MOD;
+        mul[i][j][k] = curr;
+	}
+	//For (j, 0, 4) {For (k, 0, 4) w<< mul[24][j][k]<< " "; w<<e;}
+	For (k, 0, 25) {
+        if (N & (1<<k)) {
+            update(k);
+        }
+	}
+	w<< at[0]<<e;
+}

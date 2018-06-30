@@ -1,0 +1,47 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, K)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+const int MAXN=100000, INF=1000000000000000000;
+///500,000,000
+int N, D, add, day[MAXN], mb[MAXN], out;
+bool check[MAXN];
+
+main() {
+    //ifstream cin("test.in");
+    ios_base::sync_with_stdio(0); cin.tie(0);
+    cin >> N >> D;
+    ffi {
+        cin >> day[i];
+        if (day[i] == 0) check[i] = true;
+        if (i != 0) day[i] += day[i-1];
+    }
+    mb[N-1] = day[N-1];
+    for (int i=N-2; i>=0; i--) {
+        mb[i] = max(day[i], mb[i+1]);
+    }
+
+    ffi {
+        //w<< day[i] s add<<e;
+        if (day[i]+add > D) {
+            w<< -1<<e;
+            return 0;
+        }
+        if (check[i] && day[i]+add < 0) {
+            add += max(D-(add+mb[i]), 0-(day[i]+add));
+            out++;
+        }
+    }
+    w<< out<<e;
+}

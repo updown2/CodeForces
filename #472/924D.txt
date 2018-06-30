@@ -1,0 +1,71 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define int ll
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, N)
+#define w cout
+#define e "\n"
+#define s <<" "<<
+#define a first
+#define b second
+#define pb push_back
+#define pf push_front
+#define mp make_pair
+const int MAXN = 100000, INF=10000000;
+////////////////////////////////////////////////////////
+int N, W, out;
+pair<double, double> rng[MAXN];
+double vals[MAXN];
+
+void solve(int a, int b) {
+    //w<< a s b<<e;
+    if (a == b) return;
+    solve(a, (a+b)/2), solve((a+b)/2+1, b);
+    double use[b-a+1];
+    int at1 = a, at2 = (a+b)/2+1;
+    For (i, 0, b-a+1) {
+        if (at1 == (a+b)/2+1) {
+            /// can't use at1
+            use[i] = vals[at2];
+            at2++;
+        }
+        else if (at2 == b+1) {
+            /// can't use at2
+            use[i] = vals[at1];
+            at1++;
+        }
+        else {
+            /// can use at1 and at2
+            if (vals[at1] < vals[at2]) {
+                use[i] = vals[at1];
+                at1++;
+            }
+            else {
+                use[i] = vals[at2];
+                at2++;
+                out += (a+b)/2+1 - at1;
+            }
+        }
+    }
+    For (i, 0, b-a+1) {
+        vals[i+a] = use[i];
+    }
+}
+
+main() {
+    //ifstream cin("test.in");
+    cin >> N >> W;
+    ffi {
+        int X, V; cin >> X >> V;
+        rng[i].a = -X/(double)(V-W);
+        rng[i].b = -(-X/(double)(V+W));
+        //w<< rng[i].a s rng[i].b<<e;
+    }
+    sort(rng, rng+N);
+    ffi vals[i] = -rng[i].b;
+    //ffi w<< vals[i]<<e;
+    solve(0, N-1);
+    w<< out<<e;
+}

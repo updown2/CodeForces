@@ -1,0 +1,32 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define x first
+#define y second
+#define int ll
+const int MAXN=5000;//, INF=1000000000000000000;
+///500,000,000
+int V1, V2, V3, Vm;
+
+main() {
+	//ifstream cin ("test.in");//ofstream cout ("cowjog.out");
+	ios_base::sync_with_stdio(0); cin.tie(0);
+	cin >> V3 >> V2 >> V1 >> Vm;
+	For (S1, 0, 200) For (S2, S1+1, 200) For (S3, S2+1, 200) {
+        if (V1 <= S1 && (V1*2) >= S1 && V2 <= S2 && (V2*2) >= S2 && V3 <= S3 && V3*2 >= S3
+            && Vm <= S1 && Vm*2 >= S1 && Vm*2 < S2) {
+            w<< S3<<e<<S2<<e<<S1<<e;
+            return 0;
+        }
+	}
+	w<< -1<<e;
+}

@@ -1,0 +1,78 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(ll i=a; i<b; i++)
+//500,000,000 operations
+
+//Global Variables
+int num[50];
+int a = 'a';
+
+
+int main() {
+	//ifstream cin ("test.in");
+	//ofstream cout ("test.out");
+	
+	a--;
+	string in;
+	cin >> in;
+	For (i, 0, 50) num[i] = 0;
+	For (i, 0, in.length()) {
+		num[in[i]-a]++;
+	}
+	for (int i=26; i>=2; i--) {
+		if (num[i]%2 == 1) {
+			num[i]--;
+			int k=i;
+			For (j, 1, i) {
+				if (num[j]%2 == 1) {
+					k = j;
+					break;
+				}
+			}
+			num[k]++;
+		}
+	}
+	//For (i, 1, 27) cout << num[i] << " "; cout << endl;
+	
+	if (in.length() % 2 == 0) {
+		For (i, 1, 27) {
+			For (j, 0, num[i]/2) {
+				cout << char(i+a);
+			}
+		}
+		for (int i=26; i>=1; i--) {
+			For (j, 0, num[i]/2) {
+				cout << char(i+a);
+			}
+		}
+		cout << endl;
+	}
+	else {
+		int cc;
+		For (i, 1, 27) {
+			if (num[i]%2 == 1) {
+				cc = i;
+				break;
+			}
+		}
+		num[cc]--;
+		For (i, 1, 27) {
+			For (j, 0, num[i]/2) {
+				cout << char(i+a);
+			}
+		}
+		cout << char(cc+a);
+		for (int i=26; i>=1; i--) {
+			For (j, 0, num[i]/2) {
+				cout << char(i+a);
+			}
+		}
+		cout << endl;
+	}
+	
+	
+	return 0;
+
+}
+

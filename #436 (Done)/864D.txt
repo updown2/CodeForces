@@ -1,0 +1,51 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+const int MAXN=200000, INF=9000000000000000000;
+///500,000,000
+int N, a[MAXN], cnt[MAXN], out;
+set<int> need;
+set<int>::iterator it;
+bool done[MAXN];
+
+void place(int at) {
+    cnt[a[at]]--;
+    it = need.begin();
+    a[at] = (*it);
+    need.erase(it);
+    out++;
+}
+
+main() {
+    //ifstream cin("test.in");
+    ios_base::sync_with_stdio(0); cin.tie(0);
+    cin >> N;
+    ffi {
+        cin >> a[i]; a[i]--;
+        cnt[a[i]]++;
+    }
+    ffi if (cnt[i] == 0) need.insert(i);
+    ffi {
+        if (cnt[a[i]] == 1) {}
+        else if (done[a[i]]) place(i);
+        else {
+            it = need.begin();
+            if (a[i] < (*it)) done[a[i]] = true;
+            else place(i);
+        }
+    }
+    w<< out<<e;
+    ffi w<< a[i]+1 << " "; w<<e;
+}

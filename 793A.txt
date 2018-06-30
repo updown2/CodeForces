@@ -1,0 +1,35 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(ll i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e endl
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+//500,000,000 operations
+//Global Variables
+ll N, M;
+ll vals[100000];
+
+int main() {
+	//ifstream cin ("test_codeforces.in");
+	cin >> N >> M;
+	ffi cin >> vals[i];
+	ll small = vals[0];
+	ffi small = min(small, vals[i]);
+	ll out = 0;
+	ffi {
+		ll diff = vals[i]-small;
+		if (diff%M != 0) {w<< -1<<e; return 0;}
+		out += diff/M;
+	}
+	w<<out<<e;
+	
+	return 0;
+}

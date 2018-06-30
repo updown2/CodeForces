@@ -1,0 +1,57 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define ffk For(k, 0, K)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e endl
+#define int ll
+//Global Variables
+int N, M, K, P=0, ind = -1, save; ///subtract # of inv from save to get P
+string inp[4];
+map<string, int> use;
+string curr[20];
+
+void update_ans(int loc) {
+    int inv = 0;
+    ffi {
+        For (j, i+1, N) {
+            if (use[inp[i]] > use[inp[j]]) inv++;
+        }
+    }
+    //ffi w<< inp[i] s use[inp[i]]<<e; w<<e;
+    //w<< save s inv<<e;
+    if (save-inv > P) {P = save-inv; ind = loc;}
+}
+
+main() {
+    //ifstream cin("test4.in");
+    cin >> N; save = N*(N-1)/2+1;
+    ffi cin >> inp[i];
+    ffi use[inp[i]] = i;
+    sort(inp, inp+N);
+    cin >> M;
+    ffj {
+        cin >> K; ffk cin >> curr[k];
+        do {
+            int at = 0;
+            ffk {
+                if (inp[at] == curr[k]) at++;
+                if (at == N) break;
+            }
+            if (at == N) update_ans(j);
+        } while ( std::next_permutation(inp, inp+N) );
+    }
+
+
+    if (ind == -1) w<<"Brand new problem!"<<e;
+    else {
+        w<< ind+1<<e<<"[:";
+        For (i, 0, P) w<< "|";
+        w<< ":]" <<e;
+    }
+}

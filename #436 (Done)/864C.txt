@@ -1,0 +1,73 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+const int MAXN=100000, INF=9000000000000000000;
+///500,000,000
+int A, B, F, K, gas, out, at; ///length, gas_hold, station, #of trips
+
+void done() {
+    w<< out<<e;
+    exit(0);
+}
+
+main() {
+    //ifstream cin("test.in");
+    ios_base::sync_with_stdio(0); cin.tie(0);
+    cin >> A >> B >> F >> K;
+    gas = B;
+    if (K == 1) {
+        if (B < max(F, A-F)) {w<<-1<<e; return 0;}
+    }
+    else if (K == 2) {
+        if (B < max(F, 2*(A-F))) {w<<-1<<e; return 0;}
+    }
+    else {
+        if (B < 2*max(F, A-F)) {w<<-1<<e; return 0;}
+    }
+    For (k, 0, K) {
+        if (at == 0) { ///loc = 0
+            if (gas >= A) {
+                if (k == K-1) done();
+                if (gas < A+A-F) {
+                    gas = B-(A-F);
+                    out++;
+                }
+                else gas -=A;
+            }
+            else {
+                gas = B-(A-F);
+                out++;
+            }
+        }
+        else { ///loc = A
+            if (gas >= A) {
+                if (k == K-1) done();
+                if (gas < A+F) {
+                    gas = B-F;
+                    out++;
+                }
+                else gas -= A;
+            }
+            else {
+                gas = B-F;
+                out++;
+            }
+        }
+        at = 1-at;
+        assert(gas >= 0);
+        //w<< k s out s gas<<e;
+    }
+    w<< out<<e;
+}

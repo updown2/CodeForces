@@ -1,0 +1,98 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, Q)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e endl
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+//#define int ll
+//500,000,000 operations
+//Global Variables
+const int MAXN = 500000;
+int N, Q, nums[MAXN], on[4*MAXN+1];
+
+int gcd(int a, int b) { return a==0 ? b:gcd(b%a, a); }
+
+void build (int ind, int L, int R) {
+	if (L == R) {
+		on[ind] = nums[L];
+	}
+	else {
+		build(ind*2, L, (L+R)/2);
+		build(ind*2+1, 1+(L+R)/2, R);
+		on[ind] = gcd(on[ind*2], on[ind*2+1]);
+	}
+	//w<< L s R s on[ind]<<e;
+}
+
+int query (int index, int L, int R, int oL, int oR, int x) {
+	if ( (oR < L) || (oL > R) ) return 0;
+	if (on[index] % x == 0) return 0;
+	
+	if (L == R) return 1;
+	
+	if ( (R <= oR) && (L >= oL) ) {
+		if (on[index*2] % x != 0 && on[index*2+1] % x != 0) return 2;
+	}
+	return query(index*2, L, (L+R)/2, oL, oR, x) + query(index*2+1, (L+R)/2 + 1, R, oL, oR, x);
+}
+
+int q1 (int index, int L, int R, int oL, int oR, int x) {
+	if ( (oR < L) || (oL > R) ) {/*w<< 0 s ":" s L s R s 0<<e;*/ return 0;}
+	if (on[index] % x == 0) {/*w<<1 s ":" s L s R s 0<<e;*/ return 0;}
+	
+	if ( (R <= oR) && (L >= oL) ) {
+		//w<< 2 s ":" s L s R s (on[index] % x != 0)<<e;
+		if (on[index] % x != 0) return 1;
+		return 0;
+	}
+	//w<< 3 s ":" s L s R s q1(index*2, L, (L+R)/2, oL, oR, x) + q1(index*2+1, (L+R)/2 + 1, R, oL, oR, x)<<e;
+	return q1(index*2, L, (L+R)/2, oL, oR, x) + q1(index*2+1, (L+R)/2 + 1, R, oL, oR, x);
+}
+
+void update (int index, int L, int R, int a, int v) {
+	if (a<L || a>R) return;
+	else if (a == L && a == R ) {
+		on[index] = v;
+	}
+	else {
+		update(index*2, L, (L+R)/2, a, v);
+		update(index*2+1, 1+(L+R)/2, R, a, v);
+		on[index] = gcd(on[index*2], on[index*2+1]);
+	}
+}
+
+
+
+int main() {
+	//ifstream cin ("test.in");
+	//ios_base::sync_with_stdio; cin.tie(0);
+	scanf("%d", &N);
+	ffi scanf("%d", &nums[i]);
+	build(1, 0, N-1);
+	//w<<e;
+	scanf("%d", &Q);
+	ffj {
+		int a, b, c, d;
+		scanf("%d %d %d", &a, &b, &c);
+		if (a == 2) update(1, 0, N-1, b-1, c);
+		else {
+			scanf("%d", &d); b--; c--;
+			
+			int x = q1(1, 0, N-1, b, c, d);
+			if (x == 0) printf("YES\n");
+			else if (x >= 2) printf("NO\n");
+			else {
+				if (query(1, 0, N-1, b, c, d) < 2) printf("YES\n");
+				else printf("NO\n");
+			}
+		}
+	}
+}

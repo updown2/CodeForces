@@ -1,0 +1,48 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, 26)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+//#define int ll
+//500,000,000 operations
+const int MAXN = 100000;
+//Global Variables
+int N, A[MAXN], B[MAXN];
+bool adj[26][26], vis[26];
+vector<int> out;
+
+void go(int at) {
+	if (vis[at]) return;
+	vis[at] = true;
+	For (i, 0, 26) if (adj[at][i]) go(i);
+}
+
+int main() {
+	//ifstream cin ("test.in");
+	ios_base::sync_with_stdio; cin.tie(0);
+	cin >> N;
+	ffi {char a; cin >> a; A[i] = a - 'a';}
+	ffi {char a; cin >> a; B[i] = a - 'a';}
+	ffj adj[j][j] = true;
+	
+	ffi {
+		ffj vis[j] = false;
+		go(A[i]);
+		if (vis[B[i]]) continue;
+		adj[A[i]][B[i]] = adj[B[i]][A[i]] = true;
+		out.pb(i);
+	}
+	w<< out.size()<<e;
+	For (i, 0, out.size()) {
+		w<< (char)(A[out[i]] + 'a') s (char)(B[out[i]] + 'a')<<e;
+	}
+}

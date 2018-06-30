@@ -1,0 +1,45 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(ll i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define s <<" "<<
+#define w cout
+#define e endl
+#define p printf
+#define r scanf
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+//500,000,000 operations
+//Global Variables
+int N;
+string inp;
+set<string> ways;
+
+
+int main() {
+	//freopen ("test.in", "r", stdin);
+	//freopen ("test.out", "w", stdout);
+
+	cin >> inp;
+	N = inp.length();
+	
+	ffi {
+		string now = "";
+		For (j, i, N) now += inp[j];
+		For (j, 0, i) now += inp[j];
+		//w<<now<<e;
+		ways.insert(now);
+	}
+	
+	w<< ways.size()<<e;
+	
+	
+	
+	
+	return 0;
+}
+

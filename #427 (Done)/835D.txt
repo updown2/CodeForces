@@ -1,0 +1,44 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, N)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define pf push_front
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+//Global Variables
+string inp;
+int N, dp[5000][5000], cnt[5001];
+
+main() {
+    //ifstream cin("test.in");
+    cin >> inp;
+    N = inp.length();
+
+    ffi dp[i][i] = true;
+    For (i, 1, N) if (inp[i-1] == inp[i]) dp[i-1][i] = 1;
+    For (len, 0, N-2) For (i, 1, N-len-1) {
+        if (dp[i][i+len] == 1 && inp[i-1] == inp[i+len+1]) dp[i-1][i+len+1] = 1;
+    }
+
+    For (len, 1, N) For (i, 0, N-len) {
+        //if (dp[i][i+len] == 1 && inp[i-1] == inp[i+len+1]) dp[i-1][i+len+1] = true;
+        int j = i+len;
+        //w<< i s j s ":" s i s i+(len-1)/2<<e;
+        if (dp[i][j] && dp[i][i+(len-1)/2] != 0) {
+            dp[i][j] = max(dp[i][j], dp[i][i+(len-1)/2]+1);
+        }
+    }
+    //ffi {For (j, 0, N) w<< dp[i][j]<< " "; w<<e;}
+    ffa cnt[dp[i][j]]++;
+    for (int i=N-1; i>=1; i--) cnt[i] += cnt[i+1];
+    For (i, 1, N) w << cnt[i] << " "; w<<cnt[N] <<e;
+}

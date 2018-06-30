@@ -1,0 +1,65 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, 2*L+1)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+//#define int ll
+const int MAXN=400000, INF=2000000001;
+///500,000,000
+struct Ev {
+    bool st;
+    int loc, len, cost;
+    Ev(bool a, int b, int c, int d) {st = a, loc=b, len=c, cost=d;}
+    Ev() {}
+};
+pair<pair<int, bool>, pair<int, int> > have[MAXN];
+bool comp(Ev a, Ev b) {
+    if (a.loc == b.loc) return a.st;
+    return a.loc < b.loc;
+}
+int N, out = INF, bc[MAXN];
+int X;
+
+
+main() {
+    //ifstream cin("test.in");
+    //freopen ("test.in","r",stdin);
+    //ios_base::sync_with_stdio(0); cin.tie(0);
+    scanf("%d %d", &N, &X);
+    //cin >> N >> X;
+    ffi {
+        //if (K) w<< "Bad N:" s N<<e;
+        int a, b, c;
+        scanf("%d %d %d", &a, &b, &c); //cin >> a >> b >> c;
+        have[2*i] = mp(mp(a, false), mp(b-a+1, c));
+        have[2*i+1] = mp(mp(b, true), mp(b-a+1, c));
+        //have[2*i] = Ev(true, a, b-a+1, c);
+        //have[2*i+1] = Ev(false, b, b-a+1, c);
+    }
+    N *= 2;
+//w<< "Left Loop"<<e;
+    sort(have, have+N);
+//w<<"sorted"<<e;
+
+    //ffi w<< have[i].a.a s !have[i].a.b << e;
+    For (i, 0, MAXN) bc[i] = INF;
+
+    ffi {
+        bool st = !have[i].a.b;
+        int len = have[i].b.a, loc=have[i].a.a, cost=have[i].b.b;
+        if (st) {if (X-len > 0 && bc[X-len] != INF) out = min(out, cost+bc[X-len]);}
+        else bc[len] = min(bc[len], cost);
+    }
+
+    if (out == INF) out = -1;
+    w<< out <<e;
+}

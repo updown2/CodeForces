@@ -1,0 +1,124 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e endl
+#define pb push_back
+#define int ll
+//500,000,000 operations
+const int MAXN = 100000;
+//Global Variables
+struct Point {int x, y;} p[MAXN];
+ll gcd(ll a, ll b) { return a==0 ? b:gcd(b%a, a); }
+ll lcm(ll a, ll b) { return (a*b)/gcd(a, b); }
+
+struct Frac {
+	ll num, dem;
+	Frac () {num = 0, dem = 1;}
+	Frac (int a, int b) {
+		num = a, dem = b;
+		reduce();
+	}
+	void reduce() {
+		int x = gcd(num, dem);
+		num /= x, dem /= x;
+		if (num == 0) dem = 1;
+		if (dem == 0) num = 1;
+	}
+} f1, f2, f3;
+
+int N, ind1=-1, ind2 = -1, ind3;
+bool done[MAXN], good = true;
+
+
+main() {
+	//ifstream cin ("test.in");
+    cin >> N;
+    if (N <= 4) {
+        w<<"YES"<<e;
+        return 0;
+    }
+    ffi cin >> p[i].x >> p[i].y;
+    done[0] = done[1] = true;
+    f1 = Frac(p[0].y-p[1].y, p[0].x-p[1].x);
+    For (i, 2, N) {
+        f3 = Frac(p[0].y-p[i].y, p[0].x-p[i].x);
+        if (f1.num == f3.num && f1.dem == f3.dem) done[i] = true;
+        else {
+            if (ind1 != -1) ind2 = i;
+            else ind1 = i;
+        }
+    }
+    if (ind2 == -1) {w<< "YES"<<e; return 0;}
+    //ffi w<< done[i]<<e;
+
+    f1 = Frac(p[ind1].y-p[ind2].y, p[ind1].x-p[ind2].x);
+    done[ind1] = done[ind2] = true;
+
+    ffi if (!done[i]) {
+        f3 = Frac(p[ind2].y-p[i].y, p[ind2].x-p[i].x);
+        if (f1.num == f3.num && f1.dem == f3.dem) done[i] = true;
+        else good = false;
+    }
+    if (good) {w<< "YES"<<e; return 0;}
+
+    /// put 0 & 2 on the same line
+    ind1 = 2;
+    ffi done[i] = false;
+    done[0] = done[ind1] = true;
+    f1 = Frac(p[0].y-p[ind1].y, p[0].x-p[ind1].x);
+    ind2 = ind3 = -1;
+    For (i, 1, N) if (!done[i]) {
+        f3 = Frac(p[0].y-p[i].y, p[0].x-p[i].x);
+        if (f1.num == f3.num && f1.dem == f3.dem) done[i] = true;
+        else {
+            if (ind2 != -1) ind3 = i;
+            else ind2 = i;
+        }
+    }
+    if (ind3 == -1) {w<< "YES"<<e; return 0;}
+    //ffi w<< done[i]<<e;
+    good = true;
+    f1 = Frac(p[ind3].y-p[ind2].y, p[ind3].x-p[ind2].x);
+    done[ind3] = done[ind2] = true;
+
+    ffi if (!done[i]) {
+        f3 = Frac(p[ind2].y-p[i].y, p[ind2].x-p[i].x);
+        if (f1.num == f3.num && f1.dem == f3.dem) done[i] = true;
+        else good = false;
+    }
+    if (good) {w<< "YES"<<e; return 0;}
+
+    /// put 1 & 2 on the same line
+    ind1 = 2;
+    ffi done[i] = false;
+    done[1] = done[ind1] = true;
+    f1 = Frac(p[1].y-p[ind1].y, p[1].x-p[ind1].x);
+    ind2 = ind3 = -1;
+    For (i, 0, N) if (!done[i]) {
+        f3 = Frac(p[1].y-p[i].y, p[1].x-p[i].x);
+        if (f1.num == f3.num && f1.dem == f3.dem) done[i] = true;
+        else {
+            if (ind2 != -1) ind3 = i;
+            else ind2 = i;
+        }
+    }
+    if (ind3 == -1) {w<< "YES"<<e; return 0;}
+    //ffi w<< done[i]<<e;
+    good = true;
+    f1 = Frac(p[ind3].y-p[ind2].y, p[ind3].x-p[ind2].x);
+    done[ind3] = done[ind2] = true;
+
+    ffi if (!done[i]) {
+        f3 = Frac(p[ind2].y-p[i].y, p[ind2].x-p[i].x);
+        if (f1.num == f3.num && f1.dem == f3.dem) done[i] = true;
+        else good = false;
+    }
+    if (good) {w<< "YES"<<e; return 0;}
+    w<< "NO"<<e;
+}

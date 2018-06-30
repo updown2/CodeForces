@@ -1,0 +1,64 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(ll i=a; i<b; i++)
+#define pb push_back
+//500,000,000 operations
+
+//Global Variables
+ll N, M;
+ll nums[] = {0, 1, 2, 3, 4, 5, 6};
+ll n, m;
+
+set<vector<ll> > myset;
+
+ll intlog(ll base, ll x) {
+    return (ll)ceil((log(x) / log(base)));
+}
+
+int main() {
+	//ifstream cin ("test.in");
+	//ofstream cout ("test.out");
+	
+	cin >> N >> M;
+	
+	n = intlog(7, N);
+	m = intlog(7, M);
+	if (N==1) n=1;
+	if (M==1) m=1;
+	//cout << n << " " << m << endl;
+	if (n+m <= 7) {
+		do {
+			//For (i, 0, 7) cout << nums[i] << " "; cout << endl;
+			
+			//last m numbers in base 10 < M
+			ll use1 = 0;
+			For (i, 7-m, 7) {
+				use1 *= 7;
+				use1 += nums[i];
+			}
+			
+			//next n numbers in base 10 < N
+			ll use2 = 0;
+			For (i, 7-m-n, 7-m) {
+				use2 *= 7;
+				use2 += nums[i];
+			}
+			
+			vector<ll> use;
+			if (use1 < M && use2 <N) {
+				int size1 = myset.size();
+				For (i, 7-m-n, 7) use.pb(nums[i]); myset.insert(use);
+				//if (myset.size()>size1)
+				//{For (i, 7-m-n, 7) cout << nums[i] << " "; cout << endl;}
+			}
+			
+			
+		} while ( next_permutation(nums, nums+7) );
+	}
+	cout << myset.size() << endl;
+	
+	return 0;
+
+}
+

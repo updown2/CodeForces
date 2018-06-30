@@ -1,0 +1,112 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, 26)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+//#define int ll
+//500,000,000 operations
+const ll MAXN = 10000, INF = 10000000;
+//Global Variables
+int N, P, M, dp1[MAXN][101], dp2[MAXN][101];
+string in;
+
+void get1(int L, int R, int pl) {
+	if (pl < 0 || dp1[L][pl] != -INF) return;
+	//w<< ind s L s R s pl<<e;
+	if (L == R) {
+		if (pl != 0) {
+			dp1[L][pl]++;
+			dp2[L][pl]--;
+			return;
+		}
+		dp1[L][pl] = dp2[L][pl] = in[L] - '0';
+		//w<< "Base:" s ind s dp1[ind][pl]<<e;
+		return;
+	}
+	L++, R--;
+	int cnt = 0, i;
+	for (i=L; i<=R; i++) {
+		if (in[i] == '(') cnt++;
+		if (in[i] == ')') cnt--;
+		if (cnt == 0 && in[i] == '?') break;
+	}
+	
+	// put a plus
+	For (j, 0, pl) {
+		get1(L, i-1, j);
+		get1(i+1, R, pl-1-j);
+		dp1[L-1][pl] = max(dp1[L-1][pl], dp1[L][j] + dp1[i+1][pl-1-j]);
+		dp2[L-1][pl] = min(dp2[L-1][pl], dp2[L][j] + dp2[i+1][pl-1-j]);
+	}
+	// put a minus
+	For (j, 0, pl+1) {
+		get1(L, i-1, j);
+		get1(i+1, R, pl-j);
+		dp1[L-1][pl] = max(dp1[L-1][pl], dp1[L][j] - dp2[i+1][pl-j]);
+		dp2[L-1][pl] = min(dp2[L-1][pl], dp2[L][j] - dp1[i+1][pl-j]);
+	}
+	//w<< ind s pl s ":" s dp1[ind][pl] s dp2[ind][pl]<<e;
+}
+
+void get2(int L, int R, int mi) {
+	if (mi < 0 || dp1[L][mi] != -INF) return;
+	//w<< L s R s mi<<e;
+	if (L == R) {
+		if (mi != 0) {
+			dp1[L][mi]++;
+			dp2[L][mi]--;
+			return;
+		}
+		dp1[L][mi] = dp2[L][mi] = in[L] - '0';
+		//w<< "Base:" s ind s dp1[ind][mi]<<e;
+		return;
+	}
+	L++, R--;
+	int cnt = 0, i;
+	for (i=L; i<=R; i++) {
+		if (in[i] == '(') cnt++;
+		if (in[i] == ')') cnt--;
+		if (cnt == 0 && in[i] == '?') break;
+	}
+	
+	// put a plus
+	For (j, 0, mi+1) {
+		get2(L, i-1, j);
+		get2(i+1, R, mi-j);
+		dp1[L-1][mi] = max(dp1[L-1][mi], dp1[L][j] + dp1[i+1][mi-j]);
+		dp2[L-1][mi] = min(dp2[L-1][mi], dp2[L][j] + dp2[i+1][mi-j]);
+	}
+	// put a minus
+	For (j, 0, mi) {
+		get2(L, i-1, j);
+		get2(i+1, R, mi-1-j);
+		dp1[L-1][mi] = max(dp1[L-1][mi], dp1[L][j] - dp2[i+1][mi-1-j]);
+		dp2[L-1][mi] = min(dp2[L-1][mi], dp2[L][j] - dp1[i+1][mi-1-j]);
+	}
+	//w<< ind s mi s ":" s dp1[ind][mi] s dp2[ind][mi]<<e;
+}
+
+int main() {
+	//ifstream cin ("test.in");
+	ios_base::sync_with_stdio; cin.tie(0);
+	cin >> in >> P >> M;
+	N = in.length();
+	For (i, 0, MAXN) For (j, 0, 101) dp1[i][j] = -INF, dp2[i][j] = INF;
+	if (P <= 100) {
+		get1(0, N-1, P);
+		w<< dp1[0][P]<<e;
+	}
+	else {
+		get2(0, N-1, M);
+		w<< dp1[0][M]<<e;
+	}
+}

@@ -1,0 +1,112 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define int ll
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define w cout
+#define e "\n"
+#define s <<" "<<
+#define a first
+#define b second
+const int MAXN = 100000, INF=10000000, SIZ = 1000000;
+////////////////////////////////////////////////////////
+int N, pe, po, out, top[SIZ], bot[SIZ];
+pair<int, int> loce[MAXN], loco[MAXN];
+
+main() {
+    //ifstream cin("test.in");
+    cin >> N;
+    ffi {
+        int a, b; cin >> a >> b;
+        a += MAXN, b += MAXN;
+        if ((a+b)%2 == 0) {
+            a++;
+            int c = a-b, d = a+b;
+            c += 2*MAXN, d += 2*MAXN;
+            c /= 2, d/= 2;
+
+            assert(c < SIZ && d < SIZ && c >=0 && d >= 0);
+
+            loce[pe].a = c, loce[pe].b = d;
+            //w<< "even pt:" s c s d<<e;
+            pe++;
+        }
+        else {
+            int c = a-b, d = a+b;
+            c += 2*MAXN, d += 2*MAXN;
+            c /= 2, d/= 2;
+            assert(c < SIZ && d < SIZ && c >=0 && d >= 0);
+            loco[po].a = c, loco[po].b = d;
+            po++;
+            //w<< a-MAXN s b-MAXN s ", odd pt:" s c s d<<e;
+        }
+    }
+
+    sort(loce, loce+pe), sort(loco, loco+po);
+    int at = 0;
+    top[0] = -INF, bot[0] = INF;
+    For (i, 0, SIZ) {
+        if (i != 0) {
+            top[i] = top[i-1];
+            bot[i] = bot[i-1];
+        }
+        //if (N == 100000) w<< at s loco[at].a s i<<e;
+        while (at != po && loco[at].a == i) {
+            top[i] = max(top[i], loco[at].b);
+            bot[i] = min(bot[i], loco[at].b);
+            at++;
+        }
+        //if (top[i] != -INF && N == 100000) w<< i s bot[i] s top[i]<<e;
+    }
+    //if (N == 100000) w<< "reached:" s at<<e;
+    //w<< "ODD:"<<e; For (i, 49998, 50002) {w<< bot[i] s top[i]<<e;}
+    For (i, 0, po) loco[i].a--;
+
+    at = po-1;
+    int ctop = -INF, cbot = INF;
+    for (int i=SIZ-1; i>= 0; i--) {
+        while (at != -1 && loco[at].a == i) {
+            ctop = max(ctop, loco[at].b);
+            cbot = min(cbot, loco[at].b);
+            at--;
+        }
+        //if (49998 <= i && i < 50002) w<< cbot s ctop s ":" s bot[i] s top[i]<<e;
+        int x = min(ctop, top[i]) - max(cbot, bot[i]);
+        if (x > 0) {
+            out += x;
+            //if (N == 100000) w<< x<<e;
+        }
+    }
+
+    at = 0;
+    top[0] = -INF, bot[0] = INF;
+    For (i, 0, SIZ) {
+        if (i != 0) {
+            top[i] = top[i-1];
+            bot[i] = bot[i-1];
+        }
+        while (at != pe && loce[at].a == i) {
+            top[i] = max(top[i], loce[at].b);
+            bot[i] = min(bot[i], loce[at].b);
+            at++;
+        }
+        //if (top[i] != -INF && N == 100000) w<< i s bot[i] s top[i]<<e;
+    }
+    //w<< "EVEN:" <<e; For (i, 99998, 100003) w<< bot[i] s top[i]<<e;
+    For (i, 0, pe) loce[i].a--;
+
+    at = pe-1;
+    ctop = -INF, cbot = INF;
+    for (int i=SIZ-1; i>= 0; i--) {
+        while (at != -1 && loce[at].a == i) {
+            ctop = max(ctop, loce[at].b);
+            cbot = min(cbot, loce[at].b);
+            at--;
+        }
+        //if (99998 <= i && i < 100003) w<< cbot s ctop s ":" s bot[i] s top[i]<<e;
+        int x = min(ctop, top[i]) - max(cbot, bot[i]);
+        if (x > 0) out += x;
+    }
+    w<< out<<e;
+}

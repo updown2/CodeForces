@@ -1,0 +1,48 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout<<
+#define e <<endl
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+//Global Variables
+int T, A, B, cr;
+
+bool cube() {
+    int pr = A*B;
+    int st = 1, en = 1000000;
+    while (st != en) {
+        int mid = (st+en+1)/2;
+        int cub = mid*mid*mid;
+        if (cub > pr) en = mid-1;
+        else st = mid;
+    }
+    cr = st;
+    return st*st*st == pr;
+}
+
+bool solve() {
+    if (!cube()) return false;
+    //w "cube!" e;
+    if (A < cr || B < cr) return false;
+    if (A%cr != 0 || B%cr != 0) return false;
+    return true;
+}
+
+main() {
+    //freopen ("test.in","r",stdin);
+    scanf(" %lld", &T);
+    For (t, 0, T) {
+        scanf(" %lld %lld", &A, &B);
+        if (solve()) printf("Yes\n");
+        else printf("No\n");
+    }
+}

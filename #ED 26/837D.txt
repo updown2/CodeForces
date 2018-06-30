@@ -1,0 +1,57 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, K+1)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+const int MAXN=200, INF=1000000000, M2=63, M5 = 30;
+///500,000,000
+int N, K, in[MAXN], two[MAXN], five[MAXN], p2[M2], p5[M5], out;
+int dp[2][MAXN+2][5010]; ///(ind)[taken][fives] = max_twos
+bool go[2][MAXN+2][5010];
+
+main() {
+    //ifstream cin ("test.in");
+    //freopen ("test1.in","r",stdin);freopen ("test.out","w",stdout);
+    p2[0] = p5[0] = 1;
+    For (i, 1, M2) p2[i] = 2*p2[i-1];
+    For (i, 1, M5) p5[i] = 5*p5[i-1];
+
+    cin >> N >> K;
+    ffi {
+        cin >> in[i];
+        For (j, 0, M2) if (in[i] >= p2[j] && in[i]%p2[j] == 0) two[i] = j;
+        For (j, 0, M5) if (in[i] >= p5[j] && in[i]%p5[j] == 0) five[i] = j;
+        //w<< i s ":" s two[i] s five[i]<<e;
+    }
+
+    go[0][0][0] = true;
+    ffi {
+        ffj For (a, 0, 5010) if (go[0][j][a]) {
+            //if (i >= 175) w<< i s j s a s dp[0][j][a]<<e;
+            go[1][j+1][a+five[i]] = go[1][j][a] = true;
+            dp[1][j+1][a+five[i]] = max(dp[1][j+1][a+five[i]], dp[0][j][a]+two[i]);
+            dp[1][j][a] = max(dp[1][j][a], dp[0][j][a]);
+        }
+        ffj For (a, 0, 5010) {
+            dp[0][j][a] = dp[1][j][a];
+            dp[1][j][a] = 0;
+            go[0][j][a] = go[1][j][a];
+        }
+    }
+
+    For (a, 0, 5010) {
+        //if (dp[0][K][a] != 0) w<< a s dp[0][K][a]<< e;
+        out = max(out, min(a, dp[0][K][a]));
+    }
+    w<< out<<e;
+}

@@ -1,0 +1,137 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout<<
+#define e <<endl
+#define pb push_back
+#define pf push_front
+#define mp make_pair
+#define a first
+#define b second
+#define int short
+//Global Variables
+int N, M, K;
+//bool lit[10002][10002];
+vector<int> lit_r[10000], lit_c[10000];
+set<pair<int, int> > lit;
+bool vis[10000][10000];
+bool row[10000], col[10000];
+deque<pair<int, pair<int, int> > > next1; ///(cost, (x, y))
+/**
+if y is M+1, it is the row x
+if x is N+1, it is the col y
+*/
+
+bool good(int x, int y) {
+    if (x == N+1) {if (y == -1 || y == M || col[y]) return false;}
+    else if (y == M+1) {if (x == -1 || x == N || row[x]) return false;}
+    else {
+        if (x==-1||y==-1||x==N||y == M|| vis[x][y]) return false;
+        ///check if its lit
+        if (lit.find(mp(x, y)) == lit.end()) return false;
+    }
+    return true;
+}
+
+
+main() {
+    //ifstream cin("test.in");
+    //freopen ("test.in","r",stdin);
+    cin >> N >> M >> K;
+    For (i, 0, K) {
+        int a, b; cin >> a >> b; a--; b--;
+        lit_r[a].pb(b); lit_c[b].pb(a);
+        lit.insert(mp(a, b));
+    }
+    ffi sort(lit_r[i].begin(), lit_r[i].end());
+    ffj sort(lit_c[j].begin(), lit_c[j].end());
+
+    next1.pf(mp(0, mp(0, 0)));
+    while (!next1.empty()) {
+        int pay = next1.front().a;
+        int x = next1.front().b.a;
+        int y = next1.front().b.b;
+        next1.pop_front();
+        if (x == N+1) {
+            if (col[y]) continue;
+///w "col:" s y+1 s pay e;
+            if (y == M-1) {w pay e; return 0;}
+            col[y] = true;
+            /*ffi {
+                if (good(i, y-1)) next1.pf(mp(pay, mp(i, y-1)));
+                if (good(i, y+1)) next1.pf(mp(pay, mp(i, y+1)));
+                if (good(i, y  )) next1.pf(mp(pay, mp(i, y)));
+            }*/
+            if (y != 0) {
+                for (int i: lit_c[y-1]) {
+                    if (good(i, y-1)) next1.pf(mp(pay, mp(i, y-1)));
+                }
+            }
+            for (int i: lit_c[y]) {
+                if (good(i, y)) next1.pf(mp(pay, mp(i, y)));
+            }
+            if (y != M-1) {
+                for (int i:lit_c[y+1]) {
+                    if (good(i, y+1)) next1.pf(mp(pay, mp(i, y+1)));
+                }
+            }
+        }
+
+        else if (y == M+1) {
+            if (row[x]) continue;
+///w "row:" s x+1 s pay e;
+            if (x == N-1) {w pay e; return 0;}
+            row[x] = true;
+            /*ffj {
+                if (good(x-1, j)) next1.pf(mp(pay, mp(x-1, j)));
+                if (good(x+1, j)) next1.pf(mp(pay, mp(x+1, j)));
+                if (good(x  , j)) next1.pf(mp(pay, mp(x, j)));
+            }*/
+
+            if (x != 0) {
+                for (int j: lit_r[x-1]) {
+                    if (good(x-1, j)) next1.pf(mp(pay, mp(x-1, j)));
+                }
+            }
+            for (int j: lit_r[x]) {
+                if (good(x  , j)) next1.pf(mp(pay, mp(x, j)));
+            }
+            if (x != N-1) {
+                for (int j:lit_r[x+1]) {
+                    if (good(x+1, j)) next1.pf(mp(pay, mp(x+1, j)));
+                }
+            }
+
+        }
+
+        else {
+            if (vis[x][y]) continue;
+            vis[x][y] = true;
+///w x+1 s y+1 s pay e;
+
+            if (x == N-1 && y == M-1) {w pay e; return 0;}
+
+            if (good(x-1, y)) next1.pf(mp(pay, mp(x-1, y)));
+            if (good(x+1, y)) next1.pf(mp(pay, mp(x+1, y)));
+            if (good(x, y-1)) next1.pf(mp(pay, mp(x, y-1)));
+            if (good(x, y+1)) next1.pf(mp(pay, mp(x, y+1)));
+
+            if (good(N+1, y)) next1.pb(mp(pay+1, mp(N+1, y)));
+            if (good(x, M+1)) next1.pb(mp(pay+1, mp(x, M+1)));
+
+            if (good(N+1, y+1)) next1.pb(mp(pay+1, mp(N+1, y+1)));
+            if (good(x+1, M+1)) next1.pb(mp(pay+1, mp(x+1, M+1)));
+
+            if (good(N+1, y-1)) next1.pb(mp(pay+1, mp(N+1, y-1)));
+            if (good(x-1, M+1)) next1.pb(mp(pay+1, mp(x-1, M+1)));
+        }
+
+
+    }
+    w -1 e;
+}

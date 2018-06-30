@@ -1,0 +1,74 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(ll i=a; i<b; i++)
+#define pb push_back
+//500,000,000 operations
+
+//Global Variables
+int N, M;
+vector<vector<ll> > adj;
+bool good = true;
+int team[100001];
+
+void dfs(int S) {
+	For (j, 0, adj[S].size()) {
+		if (team[adj[S][j]] == team[S]) good = false;
+		else if (team[adj[S][j]] == -1) {
+			team[adj[S][j]] = (team[S]+1)%2;
+			dfs(adj[S][j]);
+		}
+	}
+}
+
+
+int main() {
+	//ifstream cin ("test.in");
+	//ofstream cout ("test.out");
+	
+	cin >> N >> M;
+	vector<ll> use;
+	
+	For (i, 0, N+1) {
+		adj.pb(use);
+		team[i] = -1;
+	}
+	For (i, 0, M) {
+		int a, b;
+		cin >> a >> b;
+		adj[a].pb(b);
+		adj[b].pb(a);
+	}
+	For (i, 1, N+1) {
+		if (team[i] == -1) {
+			team[i] = 0;
+			dfs(i);
+		}
+	}
+	
+	if (good) {
+		ll s0 = 0;
+		ll s1 = 0;
+		For (i, 1, N+1) {
+			if (team[i] == 1) s1++;
+			else s0++;
+		}
+		cout << s0 << endl;
+		For (i, 1, N+1) {
+			if (team[i] == 0) cout << i << " ";
+		}cout << endl;
+		
+		cout << s1 << endl;
+		For (i, 1, N+1) {
+			if (team[i] == 1) cout << i << " ";
+		}cout << endl;
+	}
+	else {
+		cout << -1 << endl;
+	}
+	
+	
+	return 0;
+
+}
+

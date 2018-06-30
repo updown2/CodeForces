@@ -1,0 +1,57 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, K)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e endl
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+//500,000,000 operations
+//Global Variables
+ll N;
+ll inp[100000];
+ll pre[100000];
+set<ll> change;
+set<ll> change2;
+
+int main() {
+	//ifstream cin ("test.in");
+    cin >> N;
+    ffi {
+        cin >> inp[i];
+    }
+    pre[0] = inp[0];
+    For (i, 1, N) pre[i] = inp[i] + pre[i-1];
+    if (pre[N-1] % 2 == 1) {w<<"NO"<<e; return 0;}
+    //w<< pre[N-1]<<e;
+    ffi {
+        ll lef = pre[i];
+        ll rig = pre[N-1] - lef;
+        ll diff = lef-rig;
+        //w<< diff<<e;
+        if (change.find(diff) != change.end()) {
+            w<< "YES"<<e;
+            return 0;
+        }
+        change.insert(inp[i]*2);
+    }
+
+    for (int i=N-1; i>=0; i--) {
+        ll lef = pre[i];
+        ll rig = pre[N-1] - lef;
+        ll diff = rig-lef;
+        //w<< diff<<e;
+        if (change2.find(diff) != change2.end()) {
+            w<< "YES"<<e;
+            return 0;
+        }
+        change2.insert(inp[i]*2);
+    }
+    w<< "NO"<<e;
+}

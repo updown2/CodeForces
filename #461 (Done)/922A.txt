@@ -1,0 +1,27 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+//#define int ll
+//500,000,000 operations
+//Global Variables
+int X, Y;
+
+int main() {
+	//ifstream cin ("test.in");
+	ios_base::sync_with_stdio; cin.tie(0);
+	cin >> X >> Y;
+	Y--;
+	if (Y < 0 || Y > X || (X-Y)%2 != 0 || (Y == 0 && X > 0) ) {w<< "No"<<e; return 0;}
+	w<< "Yes"<<e;
+}

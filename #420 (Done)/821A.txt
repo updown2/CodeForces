@@ -1,0 +1,37 @@
+#include <bits/stdc++.h>
+typedef long long ll;
+using namespace std;
+#define For(i, a, b) for (int i=a; i<b; i++)
+#define ffi For (i, 0, N)
+#define ffj For (j, 0, N)
+#define ffa ffi ffj
+#define w cout
+#define e endl
+#define s << " " <<
+#define pb push_back
+//500,000,000
+//Variables
+int N,inp[50][50];
+
+bool good(int x, int y) {
+    if (inp[x][y] == 1) return true;
+    ffa {
+        if (inp[x][i]+inp[j][y] == inp[x][y]) return true;
+        //if (x == 1 && y == 0)w<< inp[x][i] s inp[j][y] s ":" s inp[i][j]<<e;
+    }
+    //w<< x s y<<e;
+    return false;
+}
+
+int main() {
+    //ifstream cin("test2.in");
+    //freopen ("test1.in","r",stdin);
+    cin >> N; ffa cin >> inp[i][j];
+    ffa {
+        if (!good(i, j)) {
+            w<< "No"<<e;
+            return 0;
+        }
+    }
+    w<< "Yes"<<e;
+}

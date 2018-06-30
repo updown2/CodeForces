@@ -1,0 +1,37 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, 100000)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e endl
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+//500,000,000 operations
+//Global Variables
+int N;
+string inp;
+ll mod = 1000000007;
+
+int main() {
+	//ifstream cin ("test.in");
+    cin >> inp;
+    N = inp.length();
+    ll out = 0;
+    ll at = 0;
+    for (int i=N-1; i>=0; i--) {
+        if (inp[i] == 'b') at++;
+        else {
+            out += at;
+            at *= 2;
+        }
+        out %= mod;
+        at %= mod;
+    }
+    w<< out<<e;
+}

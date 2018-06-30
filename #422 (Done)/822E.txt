@@ -1,0 +1,80 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, N)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+const int MAXN=100000, INF=10000000000, MOD=1000000007;
+///500,000,000
+int N, M, X, mul= 41, dp[MAXN][31], hsh1[MAXN], hsh2[MAXN], inv[MAXN], p[MAXN];
+string a, b;
+
+int see1(int st, int en) {
+    if (st == 0) return hsh1[en];
+    return (((hsh1[en]-hsh1[st-1]+MOD)%MOD)*inv[st])%MOD;
+}
+int see2(int st, int en) {
+    if (st == 0) return hsh2[en];
+    return (((hsh2[en]-hsh2[st-1]+MOD)%MOD)*inv[st])%MOD;
+}
+int go(int aind, int bnd) {
+    int st = aind, en = min(N-1, aind+M-bnd-1);
+    while (st != en) {
+        int mid = (st+en+1)/2;
+        if (see1(aind, mid) == see2(bnd, bnd+mid-aind)) st=mid;
+        else en = mid-1;
+    }
+    return st;
+}
+
+
+int mI(int x, int y) {
+    if (y == 0) return 1;
+    int p = mI(x, y/2) % MOD;
+    p = (p * p) % MOD;
+
+    return (y%2 == 0)? p : (x * p) % MOD;
+}
+
+main() {
+    //ifstream cin("test.in");
+    ios_base::sync_with_stdio(0); cin.tie(0);
+    cin >> N >> a >> M >> b >> X;
+
+    p[0] = 1; For (i, 1, N) p[i] = (p[i-1]*mul)%MOD;
+
+    hsh1[0]=a[0]-'a'+1; For (i, 1, N) hsh1[i] = (hsh1[i-1]+ (a[i]-'a'+1)*p[i])%MOD;
+    hsh2[0]=b[0]-'a'+1; For (i, 1, M) hsh2[i] = (hsh2[i-1]+ (b[i]-'a'+1)*p[i])%MOD;
+
+    ffi inv[i] = mI(p[i], MOD-2);
+
+    ffi For (j, 0, X+1) dp[i][j] = -1;
+
+    if (a[0] == b[0]) {
+        int en = go(0, 0);
+        dp[en][1] = en;
+        if (en == M-1) {w<< "YES"<<e; return 0;}
+    }
+
+    For (j, 1, X+1) For (i, j, N) {
+        dp[i][j] = max(dp[i][j], dp[i-1][j]);
+
+        if (a[i] == b[dp[i-1][j-1]+1]) {
+            int en = go(i, dp[i-1][j-1]+1);
+            dp[en][j] = max(dp[en][j], dp[i-1][j-1]+1+en-i);
+        }
+
+        if (dp[i][j] == M-1) {w<< "YES"<<e; return 0;}
+        //w<< j s i s ":" s dp[i][j]<<e;
+    }
+    w<< "NO"<<e;
+}

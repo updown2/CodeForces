@@ -1,0 +1,44 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, 100000)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e endl
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+//500,000,000 operations
+//Global Variables
+int p, orig, y, en; //place, score, winner
+bool good() {
+    int i = (en/50)%475;
+    For (j, 0, 25) {
+        i = (i*96+42)%475;
+        //w<< 26+i<<e;
+        if (26+i == p) return true;
+    }
+    return false;
+}
+
+
+
+int main() {
+	//ifstream cin ("test.in");
+    cin >> p >> orig >> y;
+    en = orig;
+    while (en-50>=y) en -= 50;
+
+
+    while (en < y || !good()) en += 50;
+
+    if (en < orig) en = orig;
+    //w<< en s orig<<e;
+    w<< (1+(en-orig)/50)/2<<e;
+
+	return 0;
+}

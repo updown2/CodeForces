@@ -1,0 +1,45 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+const int MAXN=100000, INF=1000000000000000000;
+///500,000,000
+int N;
+
+main() {
+    //ifstream cin("test.in");
+    //ifstream cin("greedy.in");ofstream cout("greedy.out");
+    ios_base::sync_with_stdio(0); cin.tie(0);
+    cin >> N;
+    if (N%4 == 0) {
+        w<< 0<<e<<N/2;
+        for (int i=1; i<N/2; i+=2) w s i s (N-i+1);
+        w<<e;
+    }
+    else if (N%4 == 1) {
+        w<< 1<<e<<N/2;
+        for (int i=2; i<=N/2; i+=2) w s i s (N-i+2);
+        w<<e;
+    }
+    else if (N%4 == 2) {
+        w<<1<<e<<N/2 s 1;
+        for (int i=3; i<=N/2; i+=2) w s i s (N-i+3);
+        w<<e;
+    }
+    else {
+        w<<0<<e<<(N+1)/2 s 1 s 2;
+        for (int i=4; i<=(N+2)/2; i+=2) w s i s (N-i+4);
+        w<<e;
+    }
+}

@@ -1,0 +1,60 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(ll i=a; i<b; i++)
+//500,000,000 operations
+
+
+//Global Variables
+ll N, K;
+ll coins[500];
+bool dp[1001][501][501];
+
+int main() {
+	//ifstream cin ("test.in");
+	//ofstream cout ("test.out");
+	
+	
+	cin >> N >> K;
+	For (i, 0, N) cin >> coins[i];
+	
+	For (i, 0, N+1) {
+		For (j, 0, K+1) {
+			For (k, 0, K+1) {
+				dp[i][j][k] = false;
+			}
+		}
+	}
+	
+	dp[0][0][0] = true;
+	For (i, 0, N+1) {
+		For (j, 0, K+1) {
+			For (k, 0, K+1) {
+				if (dp[i][j][k]) {
+					dp[i+1][j][k] = true; //Don't take the ith coin
+					if (j+coins[i] <= K) {
+						dp[i+1][j+coins[i]][k] = true;
+						if (k+coins[i] <= K) {
+							dp[i+1][j+coins[i]][k+coins[i]] = true;
+						}
+					}
+				}
+			}
+		}
+	}
+	ll out = 0;
+	For(i, 0, K+1) {
+		if (dp[N][K][i]) out++;
+	}
+	cout << out << endl;
+	For(i, 0, K+1) {
+		if (dp[N][K][i]) cout << i << " ";
+	}
+	cout << endl;
+	
+	
+	
+	return 0;
+
+}
+

@@ -1,0 +1,77 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+//#define ffj For(j, 0, K)
+//#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e endl
+//#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+//#define int ll
+//500,000,000 operations
+//Global Variables
+int N, a[200000], b[200000], t1[200000*4+1], t2[200000*4+1]; //t1(max), t2(min)
+ll out = 0;
+int las;
+
+void build(int ind, int l, int r) {
+    if (l == r) {t1[ind] = a[l]; t2[ind] = b[l]; return;}
+    build(ind*2, l, (l+r)/2); build(ind*2+1, (l+r)/2+1, r);
+    t1[ind] = max(t1[ind*2], t1[ind*2+1]);
+    t2[ind] = min(t2[ind*2], t2[ind*2+1]);
+}
+pair<int, int> qt(int ind, int l, int r, int ol, int oR) {
+    if (r < ol || l > oR) return mp(-1000000001, 1000000001);
+    if (ol <= l && r <= oR) return mp(t1[ind], t2[ind]);
+    pair<int, int> a1 = qt(ind*2, l, (l+r)/2, ol, oR);
+    pair<int, int> a2 = qt(ind*2+1, (l+r)/2+1, r, ol, oR);
+    return mp(max(a1.a, a2.a), min(a1.b, a2.b));
+}
+
+
+main() {
+    //ifstream cin ("test.in");
+    //freopen ("test2.in","r",stdin);
+    scanf("%d", &N); ffi scanf("%d", &a[i]); ffi scanf("%d", &b[i]);
+    las = N-1;
+    build(1, 0, N-1);
+    for (int i=N-1; i>=0; i--) { //i is the starting point
+        if (a[i] > b[i]) {
+            //las = i-1;
+        }
+        else {
+            int a1 = i; int b1 = las; int a2 = i; int b2 = las;
+            int en, st;
+            while (a1 != b1 || a2 != b2) {
+
+                if (a1 != b1) {
+                    en = (a1+b1+1)/2;
+                    pair<int, int> vals = qt(1, 0, N-1, i, en);
+                    int ma = vals.a; int mi = vals.b;
+                    if (ma > mi) b1 = en-1;
+                    else a1 = en;
+                }
+
+                if (a2 != b2) {
+                    st = (a2+b2)/2;
+                    pair<int, int> vals = qt(1, 0, N-1, i, st);
+                    int ma = vals.a; int mi = vals.b;
+                    if (ma >= mi) b2 = st;
+                    else a2 = st+1;
+                }
+
+                //if (N == 71) w<< a1 s b1 s "," s a2 s b2<<e;
+            }
+            pair<int, int> vals = qt(1, 0, N-1, i, a1);
+            if (vals.a == vals.b) out += a1-a2+1;
+        }
+    }
+    w<<out<<e;
+
+	return 0;
+}

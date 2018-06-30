@@ -1,0 +1,80 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+const int MAXN=100000, INF=1000000000000000000;
+///500,000,000
+int N, S, tot;
+bool vis[MAXN];
+struct Per {
+	int sl, a, b;
+} inp[MAXN];
+
+int val(int A) {
+    priority_queue<pair<int, int> > next1; ///(diff, ind)
+    ffi next1.push(mp(abs(inp[i].a-inp[i].b), i)), vis[i] = false;
+    int AS = A*S, BS = (tot-A)*S, ret = 0;
+    //if (A == 1) w<<"A = 1" s AS s BS<<e;
+    while (!next1.empty()) {
+        int ind = next1.top().b;
+        next1.pop();
+        if (!vis[ind]) {
+            vis[ind] = true;
+            if (inp[ind].a > inp[ind].b) {
+                int ta = min(AS, inp[ind].sl), tb = inp[ind].sl-ta;
+                ret += inp[ind].a*ta;
+                ret += inp[ind].b*tb;
+                AS -= ta;
+                BS -= tb;
+            }
+            else {
+                int tb = min(BS, inp[ind].sl), ta = inp[ind].sl-tb;
+                ret += inp[ind].a*ta;
+                ret += inp[ind].b*tb;
+                AS -= ta;
+                BS -= tb;
+            }
+        }
+    }
+    return ret;
+}
+bool comp(Per a, Per b) { return a.a-a.b > b.a-b.b; }
+
+
+main() {
+    //ifstream cin("test.in");
+    ios_base::sync_with_stdio(0); cin.tie(0);
+    cin >> N >> S;
+    int sli = 0;
+    ffi {
+        cin >> inp[i].sl >> inp[i].a >> inp[i].b;
+        //sA[i].sl = sB[i].sl = inp[i].sl;
+        //sA[i].a = sB[i].a = inp[i].a;
+        //sA[i].b = sB[i].b = inp[i].b;
+        sli += inp[i].sl;
+    }
+    sort(inp, inp+N, comp);
+    tot = (sli+S-1)/S;
+    int st = 0, en = tot;
+    while (st != en) {
+        int mid1 = (st+en)/2, mid2;
+        //w<< "TRying" s mid1<<e;
+        mid2 = val(mid1+1); mid1 = val(mid1);
+        //w<< mid1 s mid2<<e;
+        if (mid1 < mid2) st = (st+en)/2 + 1;
+        else en = (st+en)/2;
+    }
+    //w<<st<<e;
+    w<< val(st)<<e;
+}

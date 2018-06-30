@@ -1,0 +1,46 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, N)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+//#define int ll
+const int MAXN=100000;
+///500,000,000
+int N, inp[3][MAXN];
+multiset<int> have;
+multiset<int>::iterator it;
+int out1, out2;
+
+main() {
+	//ifstream cin ("test.in"); //freopen ("test.in","r",stdin);
+	cin >> N;
+	ffi cin >> inp[0][i];
+	For (i, 0, N-1) cin >> inp[1][i];
+	For (i, 0, N-2) {
+	    cin >> inp[2][i];
+	    have.insert(inp[2][i]);
+	}
+	For (i, 0, N-1) {
+        it = have.find(inp[1][i]);
+        if (it == have.end()) out2 = inp[1][i];
+        else have.erase(it);
+	}
+	For (i, 0, N-1) {
+        have.insert(inp[1][i]);
+	}
+	ffi {
+        it = have.find(inp[0][i]);
+        if (it == have.end()) out1 = inp[0][i];
+        else have.erase(it);
+	}
+	w<< out1<<e<<out2<<e;
+}

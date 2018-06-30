@@ -1,0 +1,40 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(ll i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, Q)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e endl
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+//500,000,000 operations
+//Global Variables
+ll N;
+
+ll num_digits(ll K) {
+    ll out = 0;
+    while (K > 0) {
+        out++;
+        K /= 10;
+    }
+    return max((ll)1, out);
+}
+
+int main() {
+	//ifstream cin ("test.in");
+	cin >> N;
+	ll N2 = N+1;
+	ll D = num_digits(N2);
+	for (ll i=10; i<pow(10.0, D); i*=10) {
+        //w<< i s N2<<e;
+        if (i > N) break;
+	    if (N2%i != 0) N2 += i-(N2%i);
+	    //w<< N2<<e;
+	}
+	w<< N2-N<<e;
+}

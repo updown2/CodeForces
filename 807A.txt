@@ -1,0 +1,39 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(ll i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e endl
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+//500,000,000 operations
+//Global Variables
+int N;
+ll val[1000][2];
+vector<ll> val2;
+
+int main() {
+    //ifstream cin ("test.in");
+    cin >> N;
+    ffi {
+        cin >> val[i][0] >> val[i][1];
+        val2.pb(-val[i][0]);
+    }
+    //Check rated
+    ffi {
+        if (val[i][0] != val[i][1]) {w<< "rated"<<e; return 0;}
+    }
+    sort(val2.begin(), val2.end());
+    ffi {
+        if (-val2[i] != val[i][0]) {w<< "unrated"<<e; return 0;}
+    }
+    w<< "maybe"<<e;
+
+	return 0;
+}

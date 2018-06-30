@@ -1,0 +1,57 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e endl
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+//500,000,000 operations
+//Global Variables
+const int MAXN = 200000, MOD = 1000000007;
+int N, ce, cv, ans = 1;
+bool vis[MAXN], lo;
+vector<int> adj[MAXN];
+
+void go(int at) {
+	if (vis[at]) return;
+	vis[at] = true;
+	cv ++;
+	ce += adj[at].size();
+	for (int i: adj[at]) {
+		go(i);
+		if (i == at) lo = true;
+	}
+}
+
+
+main() {
+	//ifstream cin ("test.in");
+	ios_base::sync_with_stdio; cin.tie(0);
+	cin >> N;
+	ffi {
+		int a, b; cin >> a >> b; a--; b--;
+		adj[a].pb(b), adj[b].pb(a);
+	}
+	N *= 2;
+	ffi if (!vis[i]) {
+		ce = cv = 0, lo = false;
+		go(i);
+		ce /= 2;
+		//if (cv != 1) w<< i s cv s ce s lo<<e;
+		if (lo) {}
+		else if (ce == cv && !lo) ans *= 2;
+		else if (ce = cv - 1) ans *= cv;
+		else if (cv == 1) {}
+		else assert(false);
+		ans %= MOD;
+	}
+	w<< ans<<e;
+}

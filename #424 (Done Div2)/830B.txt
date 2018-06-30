@@ -1,0 +1,64 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 1, N+1)
+#define ffj For(j, 0, M)
+#define ffa For(k, 0, C) ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+const int MAXN=100002, INF=10000000000;
+///500,000,000
+int N, a[MAXN], ft[MAXN], at, out;
+pair<int, int> st[MAXN*4+1]; ///(min, -ind)
+void update(int x, int v) {while(x<=N) ft[x]+=v, x+=(x&-x);}
+int query (int x) { return x>0 ? ft[x]+query(x-(x&-x)):0;}
+
+void ut(int ind, int L, int R, int x, int v) {
+    if (L > x || R < x) return;
+    if (L == R) {
+        st[ind] = mp(v, -x);
+        return;
+    }
+    int mid = (L+R)/2;
+    ut(ind*2, L, mid, x, v); ut(ind*2+1, mid+1, R, x, v);
+    st[ind] = min(st[ind*2], st[ind*2+1]);
+    //w<< st[ind].a s st[ind].b<<e;
+}
+pair<int, int> qi(int ind, int L, int R, int oL, int oR) {
+    if (oL <= L && R <= oR) return st[ind];
+    if (R < oL || L > oR) return mp(INF, INF);
+    int mid = (L+R)/2;
+    return min(qi(ind*2, L, mid, oL, oR), qi(ind*2+1, mid+1, R, oL, oR));
+}
+
+main() {
+    //ifstream cin("test.in");//freopen("test.in","r",stdin);freopen ("test.out","w",stdout);
+    //ofstream cout("test.in");
+    cin >> N;
+    For (i, 0, 4*N+1) st[i] = mp(INF, INF);
+    ffi cin >> a[i], update(i, 1), ut(1, 1, N, N-i+1, a[i]);
+    at = N;
+    int ind;
+    ffi {
+        pair<int, int> save1 = qi(1, 1, N, 1, at);
+        pair<int, int> save2 = qi(1, 1, N, at+1, N);
+        save1.b *= -1, save2.b *= -1;
+        if (save1.a <= save2.a) ind = save1.b;
+        else ind = save2.b;
+        //w<< at s ind<<e;
+        if (at >= ind) out += query(at)-query(ind-1);
+        else out += query(at)+query(N)-query(ind-1);
+        at = ind;
+        update(ind, -1);
+        ut(1, 1, N, ind, INF);
+        //w<< out<<e;
+    }
+    w<< out<<e;
+}

@@ -1,0 +1,54 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, N)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e endl
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+//500,000,000 operations
+//Global Variables
+ll N, K;
+ll cost[100000];
+bool cap[100000];
+ll out = 0;
+ll tot = 0;
+ll pre[100000]; //pre[i] = sum of capitals from 0 to i
+
+int main() {
+	//ifstream cin ("test.in");
+	//ifstream cin (".in");
+	//ofstream cout (".out");
+	cin >> N >> K;
+	ffi {cin >> cost[i]; tot += cost[i];}
+	For (i, 0, K) {
+		ll a; cin >> a; a--; cap[a] = true;
+	}
+	pre[0] = 0;
+	if (cap[0]) pre[0] = cost[0];
+	For (i, 1, N) {
+		pre[i] = pre[i-1];
+		if (cap[i]) pre[i] += cost[i];
+	}
+	
+	ffi {
+		if (cap[i]) {
+			out += cost[i]*(tot-pre[i]);
+		}
+	}
+	
+	
+	if (!cap[0] && !cap[N-1]) out += cost[0]*cost[N-1];
+	For (i, 0, N-1) {
+		if (!cap[i] && !cap[i+1]) out += cost[i]*cost[i+1];
+	}
+	w<< out<<e;	   
+	return 0;
+}
+

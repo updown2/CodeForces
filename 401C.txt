@@ -1,0 +1,30 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e endl
+#define int ll
+//Global Variables
+int ze, on;
+string out = "";
+
+main() {
+    //ifstream cin("test1.in");
+    //freopen ("test2.in","r",stdin);
+    //freopen ("test.out","w",stdout);
+    cin >> ze >> on;
+    if (ze > on+1 || ze < (on-1)/2) {w<< -1<<e; return 0;}
+    if (ze == on+1) {For (i, 0, on) w<< "01"; w<< "0"<<e; return 0;}
+    while (on > ze && on>0 && ze > 0) {w<< "110"; on-= 2; ze--;}
+    //w<< e<<on s ze<<e;
+    while (on > 0 || ze > 0) {
+        if (on > 0) {w<<"1"; on--;}
+        if (ze > 0) {w<<"0"; ze--;}
+    }
+    w<<e;
+}

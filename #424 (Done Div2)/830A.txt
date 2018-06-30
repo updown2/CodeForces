@@ -1,0 +1,43 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define ffa For(k, 0, C) ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+const int MAXN=2000, INF=10000000000;
+///500,000,000
+int N, M, P, a[MAXN], b[MAXN], mid;
+
+bool works() {
+    int j = 0;
+    //w<< mid<<e;
+    ffi {
+        while (j < M && ((abs(a[i]-b[j])+abs(P-b[j])) > mid)) j++;
+        if (j == M) return false;
+        j++;
+    }
+    return true;
+}
+
+main() {
+    //ifstream cin("test.in");//freopen("test.in","r",stdin);freopen ("test.out","w",stdout);
+    //ofstream cout("test.in");
+    cin >> N >> M >> P; ffi cin >> a[i]; ffj cin >> b[j];
+    sort(a, a+N); sort(b, b+M);
+    int st=0, en=2000000000;
+    while (st != en) {
+        mid = (st+en)/2;
+        if (works()) en=mid;
+        else st = mid+1;
+    }
+    w<< st<<e;
+}

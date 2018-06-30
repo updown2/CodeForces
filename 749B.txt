@@ -1,0 +1,60 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(ll i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define s <<" "<<
+#define w cout
+#define e endl
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+//500,000,000 operations
+//Global Variables
+int N = 3;
+int pts[3][2];
+set<pair<int, int> > out;
+set<pair<int, int> >::iterator it;
+
+void add0() {
+	int rise = pts[1][1]-pts[2][1];  //delta-y
+	int run = pts[1][0]-pts[2][0];  //delta-x
+	out.insert(mp(pts[0][0]+run, pts[0][1]+rise));
+	out.insert(mp(pts[0][0]-run, pts[0][1]-rise));
+}
+void add1() {
+	int rise = pts[0][1]-pts[2][1];  //delta-y
+	int run = pts[0][0]-pts[2][0];  //delta-x
+	out.insert(mp(pts[1][0]+run, pts[1][1]+rise));
+	out.insert(mp(pts[1][0]-run, pts[1][1]-rise));
+}
+void add2() {
+	int rise = pts[1][1]-pts[0][1];  //delta-y
+	int run = pts[1][0]-pts[0][0];  //delta-x
+	out.insert(mp(pts[2][0]+run, pts[2][1]+rise));
+	out.insert(mp(pts[2][0]-run, pts[2][1]-rise));
+}
+
+
+int main() {
+	//ifstream cin ("test.in");
+	//ofstream cout ("roboherd.out");
+	
+	ffi cin >> pts[i][0] >> pts[i][1];
+	
+	add0();
+	add1();
+	add2();
+	
+	w<< out.size() << e;
+	
+	for (it = out.begin(); it != out.end(); it++) {
+		w<< (*it).a s (*it).b << e;
+	}
+	
+	
+	return 0;
+}
+

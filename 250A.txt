@@ -1,0 +1,49 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(ll i=a; i<b; i++)
+//500,000,000 operations
+
+//Global Variables
+ll N;
+ll values[100];
+ll at = 0;
+
+int main() {
+	//ifstream cin ("test.in");
+	//ofstream cout ("test.out");
+	
+	cin >> N;
+	
+	For (i, 0, N) values[i] = 0;
+	
+	int curr_neg = 0;
+	For (i, 0, N) {
+		int a;
+		cin >> a;
+		if (a<0) {
+			if(curr_neg == 2) {
+				at++;
+				values[at]++;
+				curr_neg = 1;
+			}
+			else {
+				curr_neg ++;
+				values[at]++;
+			}
+		}
+		else {
+			values[at]++;
+		}
+	}
+	at++;
+	cout << at << endl;
+	For (i, 0, at) {
+		cout << values[i] << " ";
+	}cout << endl;
+	
+	
+	return 0;
+
+}
+

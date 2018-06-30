@@ -1,0 +1,46 @@
+/*
+ID: riya.ar1
+PROG: subset
+LANG: C++11
+*/
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, N)
+#define s <<" "<<
+#define w cout
+#define e endl
+#define pb push_back
+//500,000,000 operations
+
+//Global Variables
+ll N;
+int nums[200][2];
+
+int main() {
+	//ifstream cin ("test.in");
+	//ofstream cout ("subset.out");
+	
+	cin >> N;
+	ffi {
+		cin >> nums[i][0];
+		nums[i][1] = i+1;
+	}
+	ffi {
+		For (j, i+1, N) {
+			if (nums[i][0] > nums[j][0]) {
+				swap(nums[i][0], nums[j][0]);
+				swap(nums[i][1], nums[j][1]);
+			}
+		}
+	}
+	For (i, 0, N/2) {
+		w<< nums[i][1] s nums[N-(i+1)][1]<<e;
+	}
+	
+	
+	return 0;
+}
+

@@ -1,0 +1,80 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, K)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+//#define int ll
+const int MAXN=100001, INF=100000000;
+///500,000,000
+string inp;
+int N, Q, ft[4][11][11][MAXN]; ///[letter][start][skip][ind]
+
+void u(int a, int b, int c,int x,int v) {while(x<=N) ft[a][b][c][x]+=v, x+=(x&-x);}
+int q(int a, int b, int c,int x) {return x>0 ? ft[a][b][c][x]+q(a,b,c,x-(x&-x)):0;}
+
+void update(int ind, char v, int len, bool rem) {
+    int st = ind%len;
+    if (rem) {
+        //w<< st s len s ind s inp[ind-1]<<e;
+        if (inp[ind-1]=='A') u(0, st, len, ind, -1);
+        if (inp[ind-1]=='C') u(1, st, len, ind, -1);
+        if (inp[ind-1]=='G') u(2, st, len, ind, -1);
+        if (inp[ind-1]=='T') u(3, st, len, ind, -1);
+    }
+    if (v == 'A') u(0, st, len, ind, 1);
+    if (v == 'C') u(1, st, len, ind, 1);
+    if (v == 'G') u(2, st, len, ind, 1);
+    if (v == 'T') u(3, st, len, ind, 1);
+
+}
+
+main() {
+    //ifstream cin("test.in");
+    ios_base::sync_with_stdio(0); cin.tie(0);
+    cin >> inp >> Q; N = inp.length();
+    ffi For (j, 1, 11) update(i+1, inp[i], j, false);
+
+    //w<< q(1, 6, 10, 16)<<e;
+
+    For (asd, 0, Q) {
+        int a; cin >> a;
+        if (a == 1) {
+            int b; char c; cin >> b >> c;
+            For (j, 1, 11) update(b, c, j, true);
+            inp[b-1] = c;
+        }
+        else {
+            int b, c, f; string d; cin >> b >> c >> d; f = d.length();
+            int x = f-((c-b+1)%f);
+            if (c-b+1 > f) For (i, 0, x) d = d[f-1]+d;
+            int y = max(b, c-f+1), out = 0;
+            For (i, y, c+1) {
+                int st;
+                For (j, b-f, b) if ((i-j)%f==0) st = j;
+                st = max(0, st);
+                //w<<d[i-y];
+                //if (d[i-y]=='A') out += q(0, i%f, f, i)-q(0, i%f,f,st), w<<q(0, i%f, f, i) s q(0, i%f,f,st) s st<<e;
+                //if (d[i-y]=='C') out += q(1, i%f, f, i)-q(1, i%f,f,st), w<<q(1, i%f, f, i) s q(1, i%f,f,st) s st<<e;
+                //if (d[i-y]=='G') out += q(2, i%f, f, i)-q(2, i%f,f,st), w<<q(2, i%f, f, i) s q(2, i%f,f,st) s st<<e;
+                //if (d[i-y]=='T') out += q(3, i%f, f, i)-q(3, i%f,f,st), w<<q(3, i%f, f, i) s q(3, i%f,f,st) s st<<e;
+
+                if (d[i-y]=='A') out += q(0, i%f, f, i)-q(0, i%f,f,st);
+                if (d[i-y]=='C') out += q(1, i%f, f, i)-q(1, i%f,f,st);
+                if (d[i-y]=='G') out += q(2, i%f, f, i)-q(2, i%f,f,st);
+                if (d[i-y]=='T') out += q(3, i%f, f, i)-q(3, i%f,f,st);
+
+            }
+            //w<<e;
+            w<< out<<e;
+        }
+    }
+}

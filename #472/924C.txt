@@ -1,0 +1,39 @@
+#include<bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define int ll
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, N)
+#define ffa ffi ffj
+#define w cout
+#define e "\n"
+#define s <<" "<<
+#define a first
+#define b second
+#define pb push_back
+#define pf push_front
+#define mp make_pair
+const int MAXN = 100000, INF=10000000, MOD = 1000000007;
+////////////////////////////////////////////////////////
+int N, inp[MAXN], mmin[MAXN], vals[MAXN], rs, rb, out;
+
+main() {
+    //ifstream cin("test.in");
+    cin >> N;
+    ffi cin >> inp[i];
+    mmin[N-1] = inp[N-1]+1;
+    for (int i=N-2; i>= 0; i--) mmin[i] = max(mmin[i+1]-1, inp[i]+1);
+    rs = rb = N;
+    ffi {
+        int sz = rb-rs + 1;
+        if (sz < mmin[i]) {
+            rb++;
+            out += sz - inp[i];
+        }
+        else {
+            out += sz - inp[i]-1;
+        }
+    }
+    w<< out<<e;
+}

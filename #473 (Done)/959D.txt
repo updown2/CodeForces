@@ -1,0 +1,102 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, X)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+const int MAXN=100000, INF=1000000000000000, X = 2000000;
+///500,000,000
+int N, A[MAXN], sa[50];
+bool pri[X], up;
+vector<int> fact;
+set<int> have, rem;
+set<int>::iterator it, it2;
+
+void destroy(int j) {
+    for (int i=2*j; i<X; i+= j) pri[i] = false;
+}
+
+void update(int i) {
+    //w<< "updating" s i<<e;
+    if (up) {
+        it = have.begin();
+        A[i] = (*it);
+        have.erase(it);
+    }
+    else {
+        /// find smallest product greater than A[i]
+        For (test, A[i]+1, INF) {
+            bool works = true;
+            for (it = rem.begin(); it != rem.end(); it++) {
+                int x = (*it);
+                if (test%x == 0) {works = false; break;}
+            }
+            if (works) {
+                A[i] = test;
+                fact.clear();
+                int cop = A[i];
+                for (it = have.begin(); it != have.end() && cop != 1; it++) {
+                    int x = (*it);
+                    if (cop%x == 0) fact.pb(x);
+                    while (cop%x == 0) cop /= x;
+                }
+                for (int i: fact) {
+                    have.erase(i);
+                    rem.insert(i);
+                }
+                break;
+            }
+        }
+        up = true;
+    }
+    //w<< "done updating"<<e;
+}
+
+main() {
+    //ifstream cin("test.in");
+    cin >> N;
+    ffi cin >> A[i];
+    For (j, 2, X) pri[j] = true;
+    For (j, 2, X) if (pri[j]) destroy(j);
+    ffj if (pri[j]) have.insert(j);
+    //w<< have.size()<<e;
+    ffi {
+        bool good = true;
+        if (up) {
+            update(i);
+            continue;
+        }
+        for (it = rem.begin(); it != rem.end(); it++) {
+            int x = (*it);
+            if (A[i]%x == 0) {update(i), good = false; break;}
+        }
+        //w<< "II" s i<<e;
+        fact.clear();
+        if (good) {
+            int cop = A[i];
+            for (it = have.begin(); it != have.end() && cop != 1; it++) {
+                int x = (*it);
+                //w<< i s cop s x<<e;
+                if (cop%x == 0) fact.pb(x);
+                while (cop%x == 0) cop /= x;
+                //w<< "Done" s i s cop s x<<e;
+            }
+        }
+        //w<< "IIIIIII" s i<<e;
+        for (int i: fact) {
+            have.erase(i);
+            rem.insert(i);
+        }
+        //w<< "DASD"<<e;
+    }
+    ffi w<< A[i]<< " "; w<<e;
+}

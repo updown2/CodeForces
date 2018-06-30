@@ -1,0 +1,43 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, 26)
+#define s <<" "<<
+#define w cout
+#define e endl
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+const int MAXN=100000;
+//Global Variables
+int val[27], N, in[MAXN], pre[MAXN], out;
+string use;
+map<pair<int, int>, int> have; ///(letter, prefix_sum) = count
+map<pair<int, int>, int>::iterator it;
+
+main() {
+	//ifstream cin ("test.in");
+	For (j, 1, 27) cin >> val[j];
+	cin >> use; N = use.length();
+	ffi in[i] = use[i]-'a'+1;
+	pre[0] = val[in[0]];
+	For (i, 1, N) pre[i] = pre[i-1]+val[in[i]];
+
+	ffi {
+	    int look = pre[i]-val[in[i]];
+	    int put = pre[i];
+	    //w<< "looking for" s (char)(in[i]+'a'-1) s look<<e;
+        it = have.find(mp(in[i], look));
+        if (it != have.end()) out += have[mp(in[i], look)];
+
+        it = have.find(mp(in[i], put));
+        if (it != have.end()) have[mp(in[i], put)] += 1;
+        else have[mp(in[i], put)] = 1;
+        //w<< "added" s (char)(in[i]+'a'-1) s put<<e;
+	}
+    w<< out<<e;
+}

@@ -1,0 +1,70 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 1, 101)
+#define ffj For(j, 1, 101)
+#define ffa For(k, 0, C) ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+const int MAXN=101, INF=10000000000;
+///500,000,000
+int N;
+vector<int> adj[MAXN], num[MAXN];
+double t[MAXN]; ///Starting point
+bool vis[MAXN];
+
+void go(int at) {
+    if (vis[at]) return;
+    vis[at] = true;
+    double gap = 2.0/adj[at].size();
+    //w<< at s gap<<e;
+    int st = 0;
+    if (at == 1) { ///Root
+        t[at] = 0;
+        int x = adj[at][0];
+        int y = num[at][0];
+        w<< 1 s y s at s x s 0.0000000<<e;
+        t[x] = 1;
+        st = 1;
+    }
+    int sk=0;
+    For (i, st, adj[at].size()) {
+        double add = t[at]+gap*(i-st-sk+1);
+        while (add > 2) add-=2;
+        add = (2-add);
+        int x = adj[at][i];
+        int y = num[at][i];
+        if (vis[x]) {sk++; continue;}
+        //if (at == 2) w<< "PRINT" s x s add<<e;
+        if (add > 1) {
+            w<<1 s y s x s at s add-1 <<e;
+            t[x] = 3-add;
+        }
+        else {
+            w<<1 s y s at s x s add <<e;
+            t[x] = 1-add;
+        }
+    }
+    for (int i: adj[at]) go(i);
+}
+
+main() {
+    //ifstream cin("test.in");//freopen("test.in","r",stdin);freopen ("test.out","w",stdout);
+    //ofstream cout("test.in");
+    cin >> N;
+    For (i, 1, N) {
+        int a, b; cin >> a >> b;
+        adj[a].pb(b); num[a].pb(i);
+        adj[b].pb(a); num[b].pb(i);
+    }
+    w<< fixed << setprecision(10) << N-1<<e;
+    go(1);
+    //For (i,1, N+1)w<<t[i]<<" ";w<<e;
+}

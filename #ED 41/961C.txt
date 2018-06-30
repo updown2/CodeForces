@@ -1,0 +1,43 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define int ll
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, N)
+#define ffa ffi ffj
+#define w cout
+#define e "\n"
+#define s <<" "<<
+#define a first
+#define b second
+#define pb push_back
+#define pf push_front
+#define mp make_pair
+#define int ll
+const int MAXN = 100, INF=10000000;
+////////////////////////////////////////////////////////
+int N, grid[4][MAXN][MAXN], cnt[4][2], out=10000000000, opt[MAXN][MAXN]; /// cnt[grid][start]
+
+main() {
+    //ifstream cin("test.in");
+    cin >> N;
+    For (k, 0, 4) ffa {
+        char a; cin >> a;
+        grid[k][i][j] = a - '0';
+    }
+    ffa opt[i][j] = (i+j)%2;
+    //ffi {ffj w<< opt[i][j]<< " "; w<<e;}
+    For (k, 0, 4) ffa {
+        if (opt[i][j] == grid[k][i][j]) cnt[k][1]++;
+        else cnt[k][0]++;
+    }
+    //For (k, 0, 4) w<< cnt[k][0] s cnt[k][1]<<e;
+    out = min(out, cnt[0][0]+cnt[1][0]+cnt[2][1]+cnt[3][1]);
+    out = min(out, cnt[0][0]+cnt[1][1]+cnt[2][0]+cnt[3][1]);
+    out = min(out, cnt[0][0]+cnt[1][1]+cnt[2][1]+cnt[3][0]);
+    out = min(out, cnt[0][1]+cnt[1][0]+cnt[2][0]+cnt[3][1]);
+    out = min(out, cnt[0][1]+cnt[1][0]+cnt[2][1]+cnt[3][0]);
+    out = min(out, cnt[0][1]+cnt[1][1]+cnt[2][0]+cnt[3][0]);
+    w<< out<<e;
+}

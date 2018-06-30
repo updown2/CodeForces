@@ -1,0 +1,61 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, 26)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+//#define int ll
+//500,000,000 operations
+const ll MAXN = 100000, MOD = 1000000007;
+//Global Variables
+ll N, M, s1[MAXN], s2[MAXN], equ[MAXN], out;
+
+ll mI(ll x, ll y) {  //Returns z s.t. (x*z)%MOD = 1
+	if (y == 0) return 1;
+	ll p = mI(x, y/2) % MOD;
+	p = (p * p) % MOD;
+	return (y%2 == 0)? p : (x * p) % MOD;
+}
+ll val (ll a, ll b) {
+	return (a*mI(b, MOD-2))%MOD;
+}
+
+int main() {
+	//ifstream cin ("test.in");
+	ios_base::sync_with_stdio; cin.tie(0);
+	cin >> N >> M;
+	
+	if (M == 1) {
+		w<< 0 <<e;
+		return 0;
+	}
+	
+	ffi cin >> s1[i];
+	ffi cin >> s2[i];
+	equ[0] = val(1, 1);
+	For (i, 0, N-1) {
+		if (s1[i] != 0 && s2[i] != 0) {
+			if (s1[i] == s2[i]) equ[i+1] = equ[i];
+		}
+		else equ[i+1] = (equ[i]*mI(M, MOD-2))%MOD;
+	}
+	ffi {
+		//w<<i<<e;
+		if (s1[i] == 0 && s2[i] == 0) out += (equ[i] * val(M-1, 2*M))%MOD;
+		else if (s1[i] == 0) out += (equ[i] * val(M-s2[i], M))%MOD;
+		else if (s2[i] == 0) out += (equ[i] * val(s1[i]-1, M))%MOD;
+		else if (s2[i] < s1[i]) out += equ[i];
+		
+		out %= MOD;
+	}
+	w<< out<<e;
+	
+}

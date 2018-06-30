@@ -1,0 +1,56 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, N)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+const int MAXN=20, INF=10000000000;
+///500,000,000
+int N,M,A[MAXN],B[MAXN],dp[MAXN+1][MAXN+1],T[25][MAXN+1][MAXN+1],at[MAXN+1][MAXN+1];
+int at2[MAXN+1][MAXN+1];
+
+void update(int k) {
+    For (i, 0, N+1) For (j, 0, N+1) at2[i][j] = INF;
+
+    For (i, 0, N+1) For (j, 0, N+1) For(x, 0, N+1) {
+        at2[i][j] = min(at2[i][j], T[k][i][x] + at[x][j]);
+        //if (i == 0 && j == 0) w<< x s T[k][i][x] s at[x][j]<<e;
+	}
+	For (i, 0, N+1) For (j, 0, N+1) at[i][j] = at2[i][j];
+}
+
+main() {
+    //ifstream cin ("test.in");//freopen ("test1.in","r",stdin);freopen ("test.out","w",stdout);
+    cin >> N >> M; ffi cin >> A[i]; ffi cin >> B[i];
+    For (xyz, 0, N+1) { ///Set T[i][...]
+    //int xyz = 0;
+        For (j, 0, N+1) For (k, 0, N+1) dp[j][k] = INF;
+        dp[0][xyz] = 0;
+        For (i, 1, N+1) For (j, 0, N+1) {
+            if (j != 0) dp[i][j] = dp[i-1][j-1]+A[i-1];
+            if (j != N) dp[i][j] = min(dp[i][j], dp[i-1][j+1]+B[i-1]);
+        }
+        For (i, 0, N+1) T[0][xyz][i] = dp[N][i];
+        ///For (i, 0, N+1) w<< dp[N][i]<<" "; w<<e;
+    }
+    For (i, 1, 25) For (j, 0, N+1) For (k, 0, N+1) T[i][j][k] = INF;
+    For (i, 1, 25) For (j, 0, N+1) For (k, 0, N+1) For(x, 0, N+1) {
+        T[i][j][k] = min(T[i][j][k], T[i-1][j][x]+T[i-1][x][k]);
+	}
+
+    //For (i, 0, N+1) {For (j, 0, N+1) w<< T[1][i][j]<< " "; w<<e;}
+
+    For (i, 0, N+1) For (j, 0, N+1) at[i][j] = INF;
+    at[0][0] = 0;
+    For (i, 0, 25) if (M & (1<<i)) update(i);
+    w<< at[0][0]<<e;
+}

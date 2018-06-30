@@ -1,0 +1,75 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define pf push_front
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+///Global Variables
+///500,000,000
+int N, M, Q, qu, st;
+set<char> good;
+string inp, curr;
+
+bool solve() {
+    if (st == -1 && M!=N) return false;
+    if (st == -1) {
+        ffi {
+            if (inp[i] == '?') {
+                if (good.find(curr[i]) == good.end()) return false;
+            }
+            else if (inp[i] != curr[i]) return false;
+        }
+        return true;
+    }
+
+    For (i, 0, st) {
+        int j = i;
+        assert(inp[i] != '*');
+        if (j == M) return false;
+        if (inp[i] == '?') {
+            if (good.find(curr[j]) == good.end()) return false;
+        }
+        else if (inp[i] != curr[j]) return false;
+    }
+    For (j, st, st+M-N+1) {
+        //w<< j << e;
+        if (j == M) return false;
+        if (good.find(curr[j]) != good.end()) return false;
+    }
+    For (i, st+1, N) {
+        int j = i+M-N;
+        if (j < st) return false;
+        //w<< i s j<<e;
+        if (inp[i] == '?') {
+            if (good.find(curr[j]) == good.end()) return false;
+        }
+        else if (inp[i] != curr[j]) return false;
+    }
+    return true;
+}
+
+main() {
+    //ifstream cin("test.in");
+    cin >> inp;
+    For (i, 0, inp.length()) good.insert(inp[i]);
+    cin >> inp >> Q; N = inp.length();
+
+    st = -1;
+    ffi if (inp[i] == '*') st = i;
+
+    For (q, 0, Q) {
+        cin >> curr; M = curr.length();
+        if (solve()) w<< "YES"<<e;
+        else w<< "NO"<<e;
+    }
+}

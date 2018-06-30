@@ -1,0 +1,30 @@
+#include <bits/stdc++.h>
+#define For(i, a, b) for (int i=a; i<b; i++)
+typedef long long ll;
+
+using namespace std;
+
+//Global variables
+ll N;
+bool l = false;
+bool r = false;
+bool u = false;
+bool d = false;
+
+int main() {
+  cin >> N;
+  For(i, 0, N) {
+    char b;
+    cin >> b;
+    ll a = b-'0';
+    //cout<<b<<endl;
+    if (a==1 || a==2 || a==3) u = true;
+    if (a==7 || a==0 || a==9) d = true;
+    if (a==1 || a==4 || a==7 || a==0) l = true;
+    if (a==3 || a==6 || a==9 || a==0) r = true;
+  }
+  
+  if ( (l&&r) && (u&&d) ) cout <<"YES" <<endl;
+  else cout << "NO" << endl;
+  
+}

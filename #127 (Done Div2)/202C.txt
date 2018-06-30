@@ -1,0 +1,31 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define ffk For(k, 0, K)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e endl
+#define int ll
+//Global Variables
+int X, curr;
+int calc() {
+    int ret = 0;
+    For (i, 0, curr) {
+        if (i%2 == 0) ret += (curr+1)/2;
+        else ret += curr/2;
+    }
+    return ret;
+}
+
+main() {
+    //ifstream cin("test4.in");
+    cin >> X;
+    if (X == 3) {w<< 5<<e; return 0;}
+    curr = 1;
+    while (calc() < X) curr += 2;
+    w<< curr<<e;
+}

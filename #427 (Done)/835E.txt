@@ -1,0 +1,60 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 1, N+1)
+#define ffj For(j, 0, K)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+const int MAXN=50000, INF=1000000000;
+///500,000,000
+int N, K, X, Y, co[10], ans[10], use;
+vector<int> have;
+
+bool in(int a, int b) {
+    w<<"?" s b-a+1;
+    For (i, a, b+1) w s have[i];
+    w<<e;
+    int A; cin >> A;
+    return A == Y || A == (X^Y);
+}
+
+main() {
+	//ifstream cin ("test.in");
+	cin >> N >> X >> Y;
+	For (k, 0, 10) {
+        ffi if (i & (1<<k)) co[k]++;
+        if (co[k] > 0) {
+            K = k+1;
+            w<< "?" s co[k];
+            ffi if (i & (1<<k)) w s i;
+            w<<e;
+            fflush(stdout);
+            cin >> ans[k];
+            if (ans[k] == (X^Y) || ans[k] == Y) use = k;
+        }
+	}
+	ffi if (i & (1<<use)) have.pb(i);
+	int a = 0, b = have.size()-1;
+	while (a != b) {
+        int mid = (a+b)/2;
+        if (in(a, mid)) b = mid;
+        else a = mid+1;
+	}
+	int out1 = have[a];
+
+	For (k, 0, K) if (out1 & (1<<k)) ans[k] = (ans[k]^Y);
+	int out2 = 0;
+	For (k, 0, K) {
+        if (ans[k] == Y || ans[k] == (X^Y)) out2 |= (1<<k);
+	}
+    if (out1 > out2) swap(out1, out2);
+	w<<"!" s out1 s out2<<e;
+}

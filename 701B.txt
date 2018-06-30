@@ -1,0 +1,42 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, N)
+#define s <<" "<<
+#define w cout
+#define e endl
+#define pb push_back
+//500,000,000 operations
+
+//Global Variables
+ll N, M;
+set<int> x;
+set<int> y;
+ll current;
+
+int main() {
+	//ifstream cin ("test.in");
+	//ofstream cout ("subset.out");
+	
+	cin >> N >> M;
+	current = N*N;
+	For (i, 0, M) {
+		int a, b;
+		cin >> a >> b;
+		if (x.find(a) == x.end()) {
+			current -= (N-y.size());
+			x.insert(a);
+		}
+		if (y.find(b) == y.end()) {
+			current -= N-(x.size());
+			y.insert(b);
+		}
+		w<<current << " ";
+	}
+	
+	
+	return 0;
+}
+

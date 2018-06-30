@@ -1,0 +1,79 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(ll i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define s <<" "<<
+#define w cout
+#define e endl
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+//500,000,000 operations
+//Global Variables
+int N, M;
+vector<int> bid[200000];
+set<pair<int, int> > big;
+vector<int>::iterator up;
+set<pair<int, int> >::iterator it;
+
+int main() {
+	ifstream cin ("test.in");
+	//ofstream cout ("test.out");
+	
+	scanf("%d", &N);
+	ffi {
+		int a, c; scanf("%d %d", &a, &c);
+		a--;
+		bid[a].pb(c);
+	}
+	ffi {
+		if (bid[i].size() > 0) big.insert(mp(bid[i][bid[i].size()-1], i) );
+	}
+	
+	
+	scanf("%d", &M);
+	vector<int> added;
+	ffj {
+		int a; scanf("%d", &a);
+		
+		
+		For (i, 0, a) {
+			int b; scanf("%d", &b);
+			b--;
+			
+			if (bid[b].size() > 0) {
+				added.pb(b);
+				big.erase(mp(bid[b][bid[b].size()-1], b) );
+			}
+		}
+		
+		if (big.size() == 0) w<< 0 s 0 <<e;
+		else if (big.size() == 1) {
+			it = big.begin();
+			int loc = (*it).b;
+			w<< (loc+1) s bid[loc][0] << e;
+		}
+		else {
+			it = big.end(); it--;
+			pair<int, int> A1 = (*it);
+			int loc = A1.b;
+			it--;
+			pair<int, int> A2 = (*it);
+			int beat = A2.a;
+			
+			up = upper_bound (bid[loc].begin(), bid[loc].end(), beat);
+			w << (loc+1) s ( bid[loc][up-bid[loc].begin()] ) << e;
+		}
+		
+		while (added.size() > 0) {
+			int i = added[added.size()-1];
+			big.insert(mp(bid[i][bid[i].size()-1], i) );
+			added.pop_back();
+		}
+	}
+	return 0;
+}
+

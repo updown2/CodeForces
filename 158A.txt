@@ -1,0 +1,23 @@
+#include <bits/stdc++.h>
+#define For(i, a, b) for (int i=a; i<=b; i++)
+typedef long long ll;
+
+using namespace std;
+
+//Global variables
+ll N, K;
+ll nums[100];
+ll out = 0;
+
+int main() {
+  
+  cin >> N >> K;
+  For(i, 0, N) {
+    cin >> nums[i];
+  }
+  
+  For (i, 0, N) {
+    if (nums[i]>0 && nums[i] >= nums[K-1]) out++;
+  }
+  cout << out << endl;
+}

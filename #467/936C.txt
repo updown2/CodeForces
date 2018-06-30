@@ -1,0 +1,65 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define int ll
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define w cout
+#define e "\n"
+#define s <<" "<<
+#define a first
+#define b second
+const int MAXN = 100000, INF=10000000, SIZ = 1000000;
+////////////////////////////////////////////////////////
+int N, ds, de, curr;
+string at, out;
+
+void update(int x2) {
+    w<< x2 << " ";
+//w<< e<< ds s de<<e;
+//    w<< at<<e;
+    int x1 = N-x2;
+    if (ds < x1) ds += x2;
+    else ds = N-1-ds;
+    if (de < x1) de += x2;
+    else de = N-1-de;
+    if (curr < x1) curr += x2;
+    else curr = N-1-curr;
+
+    string use = at.substr(x1);
+    reverse(use.begin(), use.end());
+    at = use + at.substr(0, x1);
+    //w<< e<<"after:" s ds s de<<e;
+    //w<< "," s ds s de s "," s at<<e;
+}
+
+main() {
+    //ifstream cin("test.in");
+    cin >> N >> at >> out;
+    string at1 = at, out1 = out;
+    sort(at1.begin(), at1.end());
+    sort(out1.begin(), out1.end());
+    if (at1 != out1) {
+        w<< -1<<e;
+        return 0;
+    }
+    w<< 3*N-2<<e;
+    char use = out[N/2];
+    ffi if (at[i] == use ) ds = de = i;
+    For (q, 1, N) {
+        if (q%2 != 0) use = out[(N)/2-(q+1)/2];
+        else use = out[(N)/2+q/2];
+
+        ffi if (at[i] == use && (i<ds || i > de)) curr = i;
+        //w<< use s ":"<<e;
+        update(N-de-1);
+        update(N);
+        swap(ds, de);
+        update(N-curr);
+        ds--;
+    }
+    //w<< ds s de<<e;
+    if (N%2 == 0) update(0);
+    else update(N);
+    w<<e;
+}

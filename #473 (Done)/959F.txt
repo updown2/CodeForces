@@ -1,0 +1,57 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, Q)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+const int MAXN=100000, INF=1000000000000000, MOD=1000000007;
+///500,000,000
+struct Query {int l, x, ind, ans;}q[MAXN];
+int N, Q, ans, at, a[MAXN];
+set<int> have;
+set<int>::iterator it;
+vector<int> save;
+
+bool compL(Query a, Query b) {return a.l < b.l;}
+bool compInd(Query a, Query b) {return a.ind < b.ind;}
+
+main() {
+    //ifstream cin("test.in");
+    cin >> N >> Q;
+    ffi cin >> a[i];
+    ffj {cin >> q[j].l >> q[j].x; q[j].ind = j;}
+    sort(q, q+Q, compL);
+    ffi {
+        if (i == 0) {
+            have.insert(0);
+            if (a[0] == 0) ans = 2;
+            else have.insert(a[0]), ans = 1;
+        }
+        else {
+            if (have.find(a[i]) == have.end()) {
+                save.clear();
+                assert(save.size() == 0);
+                for (it = have.begin(); it != have.end(); it++) save.pb((*it)^a[i]);
+                for (int i: save) have.insert(i);
+            }
+            else ans *= 2;
+            ans %= MOD;
+        }
+        while (at != Q && q[at].l == i+1) {
+            if (have.find(q[at].x) != have.end()) q[at].ans = ans;
+            else q[at].ans = 0;
+            at++;
+        }
+    }
+    sort(q, q+Q, compInd);
+    ffj w<< q[j].ans<<e;
+}

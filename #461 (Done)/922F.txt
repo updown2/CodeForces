@@ -1,0 +1,55 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+//500,000,000 operations
+const int MAXN = 300001;
+//Global Variables
+int N, K, D[MAXN];
+bool take[MAXN];
+priority_queue<pair<int, int> > del;
+
+main() {
+	//ifstream cin ("test.in");
+	ios_base::sync_with_stdio; cin.tie(0);
+	cin >> N >> K;
+	For (i, 1, MAXN) for (int j = 0; j< MAXN; j += i) D[j]++;
+	int total = 0;
+	For (i, 2, N+1) {
+		total += D[i]-1;
+		if (total >= K) {
+			N = i;
+			break;
+		}
+		//w<< D[i]<<e;
+	}
+	//w << N <<e;
+	if (total < K) {w << "No"<<e; return 0;}
+	w<< "Yes"<<e;
+	For (i, 1, N+1) take[i] = true;
+	For (i, N/2+1, N) del.push(mp(D[i]-1, i));
+	while (total > K) {
+		int x = del.top().a, i = del.top().b;
+		del.pop();
+		if (x <= total-K) {
+			total -= x;
+			take[i] = false;
+		}
+	}
+	int cnt = 0;
+	For (i, 1, N+1) if (take[i]) cnt++;
+	w<< cnt<<e;
+	For (i, 1, N+1) if (take[i]) w<< i<< " ";
+	w<<e;
+}

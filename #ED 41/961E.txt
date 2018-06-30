@@ -1,0 +1,64 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define int ll
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, N)
+#define ffa ffi ffj
+#define w cout
+#define e "\n"
+#define s <<" "<<
+#define a first
+#define b second
+#define pb push_back
+#define pf push_front
+#define mp make_pair
+#define int ll
+const int MAXN = 200000, INF=10000000;
+////////////////////////////////////////////////////////
+int N, A[MAXN], out;
+vector<int> tree[MAXN*4+1];
+
+void build(int ind, int L, int R) {
+    if (L == R) {
+        tree[ind].pb(A[L]);
+        return;
+    }
+    int mid = (L+R)/2;
+    build(ind*2, L, mid), build(ind*2+1, mid+1, R);
+
+    for (int i: tree[ind*2]) tree[ind].pb(i);
+    for (int i: tree[ind*2+1]) tree[ind].pb(i);
+    sort(tree[ind].begin(), tree[ind].end());
+}
+int query(int ind, int L, int R, int oL, int oR, int v) {
+    if (oR < L || oL > R) return 0;
+    if (oL <= L && R <= oR) {
+        int a = 0, b = tree[ind].size()-1;
+        if (tree[ind][b] < v) return 0;
+        while (a != b) {
+            int mid = (a+b)/2;
+            if (tree[ind][mid] >= v) b=mid;
+            else a=mid+1;
+        }
+        return tree[ind].size()-a;
+    }
+    int mid = (L+R)/2;
+    return query(ind*2, L, mid, oL, oR, v)+query(ind*2+1, mid+1, R, oL, oR, v);
+}
+
+
+main() {
+    //ifstream cin("test.in");
+    ios_base::sync_with_stdio(0); cin.tie(0);
+    cin >> N;
+    ffi cin >> A[i];
+    build(1, 0, N-1);
+    //For (i, 1, 10) {w<< i<<":";for (j: tree[i]) w s (j);w<<e;}
+    ffi if (i+1 <= A[i]-1) {
+        //w<< i<<e;
+        out += query(1, 0, N-1, i+1, A[i]-1, i+1);
+    }
+    w<< out<<e;
+}

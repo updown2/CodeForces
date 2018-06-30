@@ -1,0 +1,40 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+const int MAXN=100000, INF=10000000000;
+///500,000,000
+int N, out, p2[50];
+map<int, int> have;
+
+int cost(int x) {
+    if (x == 0) return 0;
+    if (x == 1) return 1;
+    if (have.find(x) != have.end()) return have[x];
+    //w<< x<<e;
+    int b = log2(x);
+    //w<< x s b<<e;
+    int y = p2[b];
+    int z = cost(y-1) + p2[b] + cost(x-y);
+    have[x] = z;
+    return z;
+}
+
+main() {
+    //ifstream cin("test.in");
+    cin >> N;
+    p2[0] = 1;
+    For (i, 1, 50) p2[i] = 2*p2[i-1];
+    w<< cost(N-1)<<e;
+}

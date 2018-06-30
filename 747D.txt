@@ -1,0 +1,94 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(ll i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define s <<" "<<
+#define w cout
+#define e endl
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+//500,000,000 operations
+//Global Variables
+int N, K;
+int inp[200000];
+int neg = 0;
+int M = 0;
+int lis[200000];
+int sw = 0;
+
+int main() {
+	//ifstream cin ("test.in");
+	//ofstream cout ("roboherd.out");
+	
+	cin >> N >> K;
+	
+	bool pos = true;
+	ffi {
+		cin >> inp[i];
+		if (inp[i] < 0) neg++;
+		lis[i] = 0;
+		
+		if (inp[i] < 0 && pos) {
+			sw++;
+			pos = false;
+		}
+		else if (inp[i] >= 0 && !pos) {
+			pos = true;
+			sw++;
+		}
+	}
+	
+	if (neg > K) {w<<-1<<e; return 0;}
+	
+	pos = true;
+	ffi {
+		if (pos) {
+			if (inp[i] >= 0) lis[M] ++;
+			else {
+				M++;
+				pos = false;
+			}
+		}
+		else {
+			if (inp[i] >= 0) {
+				pos = true;
+				lis[M] ++;
+			}
+		}
+	}
+	if (lis[M] != 0) M++;
+	
+	lis[0] = 0;
+	
+	sort(lis, lis+(M-1));
+	
+	int afford = K-neg;
+	//w<< sw << e;
+	For (i, 0, M-1) {
+		//w<<lis[i]<<e;
+		if (lis[i] != 0) {
+			if (lis[i] <= afford) {
+				sw -= 2;
+				afford -= lis[i];
+			}
+			else break;
+		}
+	}
+	if (afford >= lis[M-1] && lis[M-1] != 0) {
+		sw--;
+		if (inp[N-1] < 0) sw--;
+	}
+	
+	
+	
+	w<< sw << e;
+	
+	
+	
+	return 0;
+}
+

@@ -1,0 +1,50 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define int ll
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define w cout
+#define e "\n"
+#define s <<" "<<
+#define a first
+#define b second
+#define pb push_back
+#define pf push_front
+#define mp make_pair
+const int MAXN = 1000001, INF=10000000;
+////////////////////////////////////////////////////////
+int X2, out = INF, bf;
+bool pri[MAXN];
+
+main() {
+    //ifstream cin("test.in");
+    cin >> X2;
+
+    For (i, 2, MAXN) pri[i] = true;
+    For (i, 2, MAXN) if (pri[i]) for (int j=i+i; j<MAXN; j += i) pri[j] = false;
+
+    //w<< X2 s sqrt(X2)+1<<e;
+    /// find factors of X2
+    For (i, 2, sqrt(X2)+1) if (X2%i == 0) {
+        if (pri[i]) bf = max(bf, i);
+        if (pri[X2/i]) bf = max(bf, X2/i);
+    }
+    //w<< "range:" s X2-bf+1 s X2<<e;
+    /// range is X2-bf+1 to X2
+    int st = X2-bf+1, en = X2;
+    For (i, 2, X2+1) if (pri[i]) {
+        int a = 2, b = X2;
+        while (a != b) {
+            int mid = (a+b)/2;
+            if (i*mid < st) a = mid+1;
+            else b = mid;
+        }
+        if (a*i >= st && a*i <= en) {
+            //w<< i s a s i*a-i+1<<e;
+            out = min(out, i*a-i+1);
+        }
+    }
+    w<< out<<e;
+}

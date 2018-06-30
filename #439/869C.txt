@@ -1,0 +1,42 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, N)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+const int MAXN=2000, INF=1000000000000000000, MOD = 998244353;
+///500,000,000
+int A, B, C, dp[5001][5001], ans1, ans2, ans3, fact[5001];
+
+int mul(int x, int y) {
+    int calc[30];
+    calc[0] = x;
+    For (i, 1, 30) calc[i] = (calc[i-1]*2)%MOD;
+    int ret = 0;
+    For (i, 0, 30) if (y & (1<<i)) {
+        ret = (ret+calc[i])%MOD;
+    }
+    return ret;
+}
+
+main() {
+    //ifstream cin("test.in");
+    ios_base::sync_with_stdio(0); cin.tie(0);
+    cin >> A >> B >> C;
+    fact[0] = 1;For (i, 1, 5001) fact[i] = (fact[i-1]*i)%MOD;
+    For (i, 0, 5001) dp[i][0] = 1; For (i, 1, 5001) For (j, 1, i+1) dp[i][j] = (dp[i-1][j-1]+dp[i-1][j])%MOD;
+    //For (i, 0, 10) For (j, 0, i+1) w<< i s j s dp[i][j]<<e;
+    For (k, 0, min(A, B)+1) ans1 += mul(mul(dp[A][k],dp[B][k]),fact[k]), ans1 %= MOD;
+    For (k, 0, min(A, C)+1) ans2 += mul(mul(dp[A][k],dp[C][k]),fact[k]), ans2 %= MOD;
+    For (k, 0, min(B, C)+1) ans3 += mul(mul(dp[B][k],dp[C][k]),fact[k]), ans3 %= MOD;
+    w<< mul(mul(ans1,ans2),ans3)%MOD<<e;
+}

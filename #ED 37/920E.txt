@@ -1,0 +1,53 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+//#define int ll
+//500,000,000 operations
+//Global Variables
+const int MAXN = 200000;
+int N, M, size;
+set<int> open, nadj[MAXN];
+set<int>::iterator it;
+vector<int> sizes;
+
+void go(int at) {
+	if (open.find(at) == open.end()) return;
+	//w<< at<<e;
+	size++;
+	open.erase(at);
+	for (it = open.begin(); it != open.end(); ) {
+		int a = (*it);
+		if(nadj[at].find(*it) == nadj[at].end()) go(*it);
+		it = open.upper_bound(a);
+	}
+}
+
+int main() {
+	//ifstream cin ("test.in");
+	ios_base::sync_with_stdio; cin.tie(0);
+	cin >> N >> M;
+	ffi open.insert(i);
+	ffj {
+		int a, b; cin >> a >> b; a--; b--;
+		nadj[a].insert(b); nadj[b].insert(a);
+	}
+	ffi if (open.find(i) != open.end()) {
+		size = 0;
+		go(i);
+		sizes.pb(size);
+	}
+	sort(sizes.begin(), sizes.end());
+	w << sizes.size() << e;
+	For (i, 0, sizes.size()) w<< sizes[i]<< " "; w<<e;
+}

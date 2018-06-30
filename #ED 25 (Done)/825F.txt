@@ -1,0 +1,71 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, N)
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+//#define int ll
+const int MAXN=8000;
+///500,000,000
+int N, goTo[MAXN][MAXN], dp[MAXN];
+string in;
+
+int dig(int X) {
+    int out = 0;
+    while (X > 0) X /= 10, out++;
+    return max(out, 1);
+}
+int len(int i, int j) {return dig((i-j+1)/(i-goTo[j][i]+1));}
+
+void update(int i, int j) {
+    if (j == 0) {dp[i] = min(dp[i], (i-goTo[j][i]+1)+len(i, j)); return;}
+    dp[i] = min(dp[i], dp[j-1]+(i-goTo[j][i]+1)+len(i, j));
+}
+
+main() {
+	//ifstream cin ("test.in"); //freopen ("test.in","r",stdin);
+	cin >> in; N = in.length();
+
+	For (k, 0, N) {
+        int j = k;
+		int i = k+1;
+		goTo[k][j] = j;
+		while (i != N) {
+			if (in[i] == in[j]) {
+				goTo[k][i] = j+1;
+				i++;
+				j++;
+			}
+			else {
+				if (j != k) {
+					j = goTo[k][j-1];
+				}
+				else {
+					goTo[k][i] = k;
+					i++;
+				}
+			}
+		}
+	}
+	//ffi {ffj w<< goTo[i][j]<< " "; w<<e;}
+
+	ffi dp[i] = i+2;
+	ffi {
+        For (j, 0, i+1) {
+            if ( (i-j+1)%(i-goTo[j][i]+1) == 0 ) {
+                update(i, j);
+                //w<< "updating" s i s j<<e;
+            }
+            else if (j != 0) dp[i] = min(dp[i], dp[j-1] + 1 + (i-j+1));
+        }
+        //w<< "i:" s i s ":" s dp[i]<<e;
+	}
+	w<< dp[N-1]<<e;
+}

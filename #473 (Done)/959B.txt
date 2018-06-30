@@ -1,0 +1,45 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+const int MAXN=100000, INF=10000000000;
+///500,000,000
+int N, K, M, cost[MAXN], group[MAXN], sm[MAXN], save[MAXN], out;
+map<string, int> have;
+
+main() {
+    //ifstream cin("test.in");
+    cin >> N >> K >> M;
+    ffi {
+        string a; cin >> a;
+        have[a] = i;
+    }
+    ffi cin >> cost[i];
+    For (i, 0, K) {
+        int si; cin >> si;
+        int sma = INF;
+        For (j, 0, si) {
+            cin >> save[j];
+            save[j]--;
+            group[save[j]] = i;
+            sma = min(sma, cost[save[j]]);
+        }
+        For (j, 0, si) sm[save[j]] = sma;
+    }
+    ffj {
+        string a; cin >> a;
+        out += sm[have[a]];
+    }
+    w<< out<<e;
+}

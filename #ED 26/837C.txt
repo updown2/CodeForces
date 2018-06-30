@@ -1,0 +1,53 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, N)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+const int MAXN=200, INF=1000000000;
+///500,000,000
+struct seal {
+    int x, y, ind;
+}inp[MAXN];
+
+int N, A, B, out;
+
+void update(int x1, int y1, int x2, int y2) {
+    int a = max(x1, x2), b = y1+y2;
+    if (a > b) swap(a, b);
+    if (a <= A && b <= B) out = max(out, x1*y1+x2*y2);
+
+    a = max(y1, y2), b = x1+x2;
+    if (a > b) swap(a, b);
+    if (a <= A && b <= B) out = max(out, x1*y1+x2*y2);
+}
+
+main() {
+    //ifstream cin ("test.in");
+    //freopen ("test1.in","r",stdin);freopen ("test.out","w",stdout);
+    cin >> N >> A >> B;
+    if (A > B) swap(A, B);
+    ffi {
+        int a, b;
+        cin >> a >> b;
+        inp[2*i].x = a;
+        inp[2*i].y = b;
+        inp[2*i+1].x = b;
+        inp[2*i+1].y = a;
+        inp[2*i].ind = inp[2*i+1].ind = i;
+    }
+    N *= 2;
+    ffa if (inp[i].ind != inp[j].ind) {
+        update(inp[i].x, inp[i].y, inp[j].x, inp[j].y);
+    }
+    w<< out<<e;
+}

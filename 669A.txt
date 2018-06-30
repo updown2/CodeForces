@@ -1,0 +1,25 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define s <<" "<<
+#define w cout
+#define e endl
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+//500,000,000 operations
+//Global Variables
+ll N;
+ll out = 0;
+int main() {
+	cin >> N;
+	out += 2*(N/3);
+	if (N%3 > 0) out++;
+	w<< out<<e;
+	
+	return 0;
+}

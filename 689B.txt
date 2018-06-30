@@ -1,0 +1,43 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, K)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e endl
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+//500,000,000 operations
+//Global Variables
+int N;
+int inp[200000];
+int out[200000];
+priority_queue<pair<int, int> > next1; //(-dist, loc)
+int have[200000];
+int at = 0;
+
+int main() {
+    //ifstream cin ("test.in");
+    cin >> N;
+    ffi {cin >> inp[i]; inp[i]--; out[i] = -1;}
+    next1.push(mp(0, 0));
+    while (!next1.empty()) {
+        int dist = -next1.top().a;
+        int loc = next1.top().b;
+        next1.pop();
+        if (loc >= 0 && loc <= N-1 && out[loc] == -1) {
+            out[loc] = dist;
+            next1.push(mp(-dist-1, inp[loc]));
+            next1.push(mp(-dist-1, loc+1));
+            next1.push(mp(-dist-1, loc-1));
+        }
+    }
+
+    For (i, 0, N-1) w<< out[i]<<" "; w<< out[N-1]<<e;
+	return 0;
+}

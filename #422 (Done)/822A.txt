@@ -1,0 +1,28 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, 2*L+1)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+const int MAXN=1000000, INF=10000000000;
+///500,000,000
+int A, B;
+
+
+main() {
+    //ifstream cin("test.in");
+    cin >> A >> B;
+    A = min(A, B);
+    int out = 1;
+    For (i, 1, A+1) out *= i;
+    w<< out<<e;
+}

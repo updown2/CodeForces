@@ -1,0 +1,41 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, N)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+const int MAXN=5000, INF=1000000000000000000, MOD=1000000007;
+///500,000,000
+int N, dp[2][MAXN], sum[2][MAXN], out;
+char inp[MAXN];
+
+main() {
+    //ifstream cin("test.in");//ofstream cout("cbs.out");
+    ios_base::sync_with_stdio(0); cin.tie(0);
+    cin >> N; ffi cin >> inp[i];
+    dp[0][0] = sum[0][0] = 1;
+    For (i, 1, N) {
+        ffj {
+            if (inp[i-1] == 'f') {
+                if (j != 0) dp[i%2][j] = dp[1-(i%2)][j-1];
+                else dp[i%2][j] = 0;
+            }
+            else {
+                dp[i%2][j] = sum[1-(i%2)][j];
+            }
+            //w<< i s j s dp[i%2][j]<<e;
+        }
+        sum[i%2][N-1] = dp[i%2][N-1];
+        for (int j=N-2; j>=0; j--) sum[i%2][j] = (dp[i%2][j] + sum[i%2][j+1])%MOD;
+    }
+    w<< sum[(N-1)%2][0] <<e;
+}

@@ -1,0 +1,44 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, Q)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e endl
+#define int ll
+#define pb push_back
+//500,000,000 operations
+//Global Variables
+int N, Q;
+string inp;
+int dp[5000][5000];
+
+main() {
+    //ifstream cin ("test.in");
+    //ofstream cout ("test.out");
+    char use; scanf("%c", &use);
+    while (use != '\n') {inp += use; scanf("%c", &use);}
+    N = inp.size();
+    //w<< inp<<e;
+
+    //ffi For (j, 0, N) dp[i][j] = 0;
+    ffi dp[i][i] = 1;
+    For (i, 1, N) if (inp[i-1] == inp[i]) dp[i-1][i] = 1;
+    For (len, 0, N-2) For (i, 1, N-len-1) {
+        if (dp[i][i+len] == 1 && inp[i-1] == inp[i+len+1]) dp[i-1][i+len+1] = 1;
+    }
+    //ffi {For (j, 0, N) w<< dp[i][j]<< " "; w<<e;}
+    for (int i=N-2; i>=0; i--) For (j, 1, N)
+        dp[i][j] += dp[i+1][j]+dp[i][j-1]-dp[i+1][j-1];
+    //ffi {For (j, 0, N) w<< dp[i][j]<< " "; w<<e;}
+
+    scanf(" %d", &Q);
+    ffj {
+        int a, b; scanf(" %d %d", &a, &b); a--; b--;
+        printf("%d\n", dp[a][b]);
+    }
+	return 0;
+}

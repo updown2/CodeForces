@@ -1,0 +1,85 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(ll i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+//#define ll ll
+//500,000,000 operations
+const int MAXN = 100000;
+//Global Variables
+int N, M, S, fodd[MAXN], feven[MAXN];
+vector<int> adj[MAXN];
+bool vis[MAXN], odd[MAXN], even[MAXN];
+
+bool en (int at) {
+	if (adj[at].size() == 0) return true;
+	if (vis[at]) return false;
+	vis[at] = true;
+	For (i, 0, adj[at].size()) {
+		if (en(adj[at][i])) return true;
+	}
+	return false;
+}
+
+void go(int at, int d, int par) {
+	if (d%2 == 0) even[at] = true, feven[at] = par;
+	else odd[at] = true, fodd[at] = par;
+	For (i, 0, adj[at].size()) {
+		int x = adj[at][i];
+		if (d%2 == 0 && !odd[x]) go(x, d+1, at);
+		if (d%2 == 1 && !even[x]) go(x, d+1, at);
+	}
+}
+
+bool go2(int at) {
+	if (vis[at]) return true;
+	vis[at] = true;
+	For (i, 0, adj[at].size()) {
+		if (go2(adj[at][i])) return true;
+	}
+	return false;
+}
+
+int main() {
+	ifstream cin ("test.in");
+	ios_base::sync_with_stdio; cin.tie(0);
+	cin >> N >> M;
+	ffi {
+		int a; cin >> a;
+		For (j, 0, a) {
+			int b; cin >> b; b--; adj[i].pb(b);
+		}
+	}
+	cin >> S; S--;
+	if (!en(S)) {w<< "Draw"<<e; return 0;}
+	go (S, 0, -1);
+	//ffi w<< odd[i] s even[i]<<e;
+	ffi if (adj[i].size() == 0 && odd[i]) {
+		w<< "Win"<<e;
+		stack<int> have;
+		int at = i;
+		bool odd = true;
+		while (at != -1) {
+			have.push(at);
+			if (odd) at = fodd[at];
+			else at = feven[at];
+			odd = !odd;
+		}
+		assert(have.size() < 1000000);
+		while (!have.empty()) {w<< have.top()+1<< " "; have.pop();}
+		w<<e;
+		return 0;
+	}
+	ffi vis[i] = false;
+	if (go2(S)) {w<< "Draw"<<e; return 0;}
+	w<< "Lose"<<e;
+}

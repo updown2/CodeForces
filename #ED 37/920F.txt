@@ -1,0 +1,76 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, Q)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e endl
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+//500,000,000 operations
+//Global Variables
+const int MAXN = 300000;
+int N, Q, ons[4*MAXN+1], onm[4*MAXN+1], a[MAXN], D[6000001], b, c, d;
+
+
+void build (int index, int L, int R) {
+	if (L == R) {
+		ons[index] = onm[index] = a[L];
+	}
+	else {
+		build(index*2, L, (L+R)/2);
+		build(index*2+1, 1+(L+R)/2, R);
+		ons[index] = ons[index*2] + ons[index*2+1];
+		onm[index] = max(onm[index*2], onm[index*2+1]);
+	}
+}
+int query (int index, int L, int R, int oL, int oR) {
+	if ( (oR < L) || (oL > R) ) return 0;
+	if ( (R <= oR) && (L >= oL) ) return ons[index];
+	return query(index*2, L, (L+R)/2, oL, oR) + query(index*2+1, 1+(L+R)/2, R, oL, oR );
+}
+
+void update (int index, int L, int R, int a, int b) {
+	if (b<L || a>R) return;
+	else if (a<=L && R<= b) {
+		if (onm[index] <= 2) return;
+		if (L == R) {
+			onm[index] = ons[index] = D[onm[index]];
+			return;
+		}
+	}
+	update(index*2, L, (L+R)/2, a, b);
+	update(index*2+1, 1+(L+R)/2, R, a, b);
+	ons[index] = ons[index*2]+ons[index*2+1];
+	onm[index] = max(onm[index*2], onm[index*2+1]);
+}
+
+
+main() {
+	//ifstream cin ("test.in"); ios_base::sync_with_stdio; cin.tie(0);
+	
+	/// Create d
+	For (i, 1, 6000001) for (int j = 0; j< 6000001; j += i) D[j]++;
+	
+	scanf("%I64d %I64d", &N, &Q);
+	ffi scanf("%I64d", &a[i]);
+	
+	build (1, 0, N-1);
+	For (i, 0, Q) {
+		scanf("%I64d %I64d %I64d", &b, &c, &d);
+		//w<< b s c s d<<e;
+		c--; d--;
+		
+		if (b == 1) {
+			/// Replace
+			update(1, 0, N-1, c, d);
+		}
+		else printf("%I64d\n", query(1, 0, N-1, c, d));
+	}
+}

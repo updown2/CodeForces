@@ -1,0 +1,52 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, K)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e endl
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+//500,000,000 operations
+//Global Variables
+int M, mid, ways;
+int ma = 1000000000000000000000;
+
+void calc() {
+    ways = 0;
+    For (i, 2, 10000001) {
+        ll big = i*i*i;
+        if (mid >= big) {
+            ways += (int)(mid/big);
+            //w<< mid/big<<e;
+        }
+        else break;
+    }
+}
+
+main() {
+    //ifstream cin ("test.in");
+    cin >> M;
+    int a = 1;
+    int b = ma;
+    while (a < b) {
+        mid = (a+b)/2;
+        calc();
+        //w<< a s b s mid<<e;
+        if (ways >= M) b = mid;
+        else a = mid+1;
+
+    }
+    mid = (a+b)/2;
+    calc();
+    //w<< ways<<e;
+    if (ways != M) a = -1;
+    w<< a <<e;
+	return 0;
+}

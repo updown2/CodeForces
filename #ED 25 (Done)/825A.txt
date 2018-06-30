@@ -1,0 +1,35 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, N)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define pf push_front
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+///Global Variables
+int N; string inp;
+
+main() {
+    //ifstream cin("test.in");
+    cin >> N >> inp;
+    inp += '0', N++;
+    int curr = 0;
+    int out = 0;
+    ffi {
+        if (inp[i] == '1') curr++;
+        else {
+            out *= 10;
+            out += curr;
+            curr = 0;
+        }
+    }
+    w<< out <<e;
+}

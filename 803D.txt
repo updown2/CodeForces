@@ -1,0 +1,65 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, K)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e endl
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+//500,000,000 operations
+//Global Variables
+int N, K, mid;
+string in;
+set<int> br;
+set<int>::iterator it;
+
+bool works() {
+    int ind = 0; int taken = 0;
+    while (ind < N) {
+        int save = taken;
+        //w<< taken<<e;
+        it = br.upper_bound(min(N-1, ind+mid-1));
+        it--;
+        int loc = (*it);
+        //w<< min(N-1, ind+mid-1) s "found" s loc<<e;
+        if (loc > ind) {
+            taken++;
+            ind = loc+1;
+            //w<< "ind is changing to" s ind<<e;
+        }
+        if (save == taken) return false;
+    }
+    //w<< mid s taken s K<<e;
+    return taken <= K;
+}
+
+main() {
+    //ifstream cin ("test.in");
+    //ofstream cout ("test.out");
+    cin >> K;
+    getline(cin, in);
+    getline(cin, in);
+    N = in.length();
+    ffi if (in[i] == ' ' || in[i] == '-') br.insert(i);
+    br.insert(N-1);
+    br.insert(0);
+    //w<< N<<e;
+    int a = N/K; int b = N;
+    while (a != b) {
+        mid = (a+b)/2;
+        //w<< "Searching:" s mid<<e;
+        if (works()) b = mid;
+        else a = mid+1;
+
+    }
+    w<< a<<e;
+
+	return 0;
+}

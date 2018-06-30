@@ -1,0 +1,49 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+const int MAXN=100, INF=1000000000;
+///500,000,000
+int N, M;
+char grid[MAXN][MAXN];
+bool ver=true, hor = true;
+int use = (int)'R'+(int)'B'+(int)'G';
+
+bool check_hor() {
+    if (N%3 != 0) return false;
+    int x = N/3;
+    if ( (int)grid[0][0] + (int)grid[x][0] + (int)grid[2*x][0] != use) return false;
+    For (i, 0, x) ffj if (grid[i][j] != grid[0][0]) return false;
+    For (i, x, 2*x) ffj if (grid[i][j] != grid[x][0]) return false;
+    For (i, 2*x, N) ffj if (grid[i][j] != grid[2*x][0]) return false;
+    return true;
+}
+bool check_ver() {
+    if (M%3 != 0) return false;
+    int x = M/3;
+    if ( (int)grid[0][0] + (int)grid[0][x]+(int)grid[0][2*x] != use) return false;
+    ffi For (j, 0, x) if (grid[i][j] != grid[0][0]) return false;
+    ffi For (j, x, 2*x) if (grid[i][j] != grid[0][x]) return false;
+    ffi For (j, 2*x, M) if (grid[i][j] != grid[0][2*x]) return false;
+    return true;
+}
+
+main() {
+    //ifstream cin ("test.in");
+    //freopen ("test1.in","r",stdin);freopen ("test.out","w",stdout);
+    cin >> N >> M;
+    ffa cin >> grid[i][j];
+    if (!check_ver() && !check_hor()) w<< "NO"<<e;
+    else w<<"YES"<<e;
+}

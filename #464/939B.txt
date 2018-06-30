@@ -1,0 +1,36 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+//#define int ll
+//500,000,000 operations
+const int MAXN = 100000;
+//Global Variables
+ll K, N, out1 = 1, out2, save;
+
+int main() {
+	//ifstream cin ("test.in");
+	ios_base::sync_with_stdio; cin.tie(0);
+	cin >> K >> N;
+	ffi {
+		ll a; cin >> a;
+		ll cnt = K/a;
+		//w<< cnt<<e;
+		if (cnt * a > save) {
+			save = cnt*a;
+			out2 = cnt;
+			out1 = i+1;
+		}
+	}
+	w<< out1 s out2<<e;
+}

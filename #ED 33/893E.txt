@@ -1,0 +1,74 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, N)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+const int MAXN=1000020, INF=1000000000000000000, MOD = 1000000007;
+///500,000,000
+int Q, X, Y, fact[MAXN], inv[MAXN], p2[MAXN], out, small_prime[MAXN];
+vector<int> factors;
+bool prime[MAXN];
+
+int mI(int x, int y) {  //Returns z s.t. (x*z)%MOD = 1
+    if (y == 0) return 1;
+    int p = mI(x, y/2) % MOD;
+    p = (p * p) % MOD;
+
+    return (y%2 == 0)? p : (x * p) % MOD;
+}
+void rem(int jump) {
+    small_prime[jump] = jump;
+    factors.pb(jump);
+    for (int i=2*jump; i<MAXN; i += jump) if (prime[i]) {
+        prime[i] = false;
+        small_prime[i] = jump;
+    }
+}
+
+main() {
+    //ifstream cin("test.in");
+    ios_base::sync_with_stdio(0); cin.tie(0);
+    fact[0] = 1; inv[0] = mI(1, MOD-2);
+    p2[0] = 1;
+    For (i, 1, MAXN) {
+        p2[i] = (2*p2[i-1])%MOD;
+        fact[i] = (fact[i-1]*i)%MOD;
+        inv[i] = mI(fact[i], MOD-2);
+        if (i != 1) prime[i] = true;
+    }
+    For (i, 2, MAXN) if (prime[i]) rem(i);
+
+    scanf(" %I64d", &Q);
+    For (q, 0, Q) {
+        scanf(" %I64d %I64d", &X, &Y); out = p2[Y-1];
+        int cnt = 0;
+        int val = 1;
+        while (X != 1) {
+            if (small_prime[X] == val) {X /= val; cnt++;}
+            else {
+                int mul = fact[Y+cnt-1];
+                mul = (mul*inv[Y-1])%MOD;
+                mul = (mul*inv[cnt])%MOD;
+                out = (out*mul)%MOD;
+                cnt = 1;
+                val = small_prime[X];
+                X /= val;
+            }
+        }
+        int mul = fact[Y+cnt-1];
+        mul = (mul*inv[Y-1])%MOD;
+        mul = (mul*inv[cnt])%MOD;
+        out = (out*mul)%MOD;
+        printf("%I64d\n", out);
+    }
+}

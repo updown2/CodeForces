@@ -1,0 +1,60 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(ll i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define s <<" "<<
+#define w cout
+#define e endl
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+//500,000,000 operations
+//Global Variables
+int N;
+string inp;
+int A, C, G, T;
+
+int main() {
+	//ifstream cin ("test.in");
+	//ofstream cout ("roboherd.out");
+	
+	cin >> N;
+	cin >> inp;
+	if (N%4 != 0) {
+		w<< "==="<<e;
+		return 0;
+	}
+	
+	A = C = G = T = N/4;
+	ffi {
+		if (inp[i] == 'A') A--;
+		if (inp[i] == 'C') C--;
+		if (inp[i] == 'G') G--;
+		if (inp[i] == 'T') T--;
+	}
+	
+	if (A < 0 || C < 0 || G < 0 || T < 0) {
+		w<< "==="<<e;
+		return 0;
+	}
+	
+	ffi {
+		if (inp[i] == '?') {
+			if (A > 0) {inp[i] = 'A'; A--;}
+			else if (C > 0) {inp[i] = 'C'; C--;}
+			else if (G > 0) {inp[i] = 'G'; G--;}
+			else {inp[i] = 'T'; T--;}
+		}
+	}
+	
+	w << inp <<e;
+	
+	
+	
+	
+	return 0;
+}
+

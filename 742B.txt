@@ -1,0 +1,37 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(ll i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e endl
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+//500,000,000 operations
+//Global Variables
+ll N, X;
+ll have[10000001];
+ll out = 0;
+
+int main() {
+    //ifstream cin ("test.in");
+    cin >> N >> X;
+    For (i, 0, 10000001) have[i] = 0;
+    ffi {
+        int a; cin >> a;
+        have[a]++;
+    }
+    For (i, 0, 10000001) {
+        ll at = (i^X);
+        if (at < 10000001) out+= have[at]*have[i];
+        if (at == i) out -= have[at];
+    }
+    out /= 2;
+    w<< out <<e;
+    return 0;
+}

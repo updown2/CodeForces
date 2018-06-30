@@ -1,0 +1,93 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, N)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define pf push_front
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+///Global Variables
+int N, K, inp[100][3], mod = 1000000007;
+
+///Variables for matrix (60)
+int M;
+int at[16] = {1,};
+int mul[61][16][16];
+
+///Other Variables
+int two[61];
+
+
+void set_0() {For (i, 0, M) For (j, max((ll)0, M-2-i), min(M, M-i+1)) mul[0][i][j] = 1;}
+void set_all() {
+    For (at, 1, 61) {
+        For (i, 0, M) For (j, 0, M) {
+            int curr = 0;
+            For (k, 0, M) curr += mul[at-1][i][k]*mul[at-1][k][M-j-1], curr %= mod;
+            mul[at][i][j] = curr;
+            //w<< at s i s j s ":" s curr<<e;
+        }
+    }
+}
+void shift(int Z) {
+    int at2[16];
+    For (i, 0, M) {
+        int curr = 0;
+        For (j, 0, M) curr += at[M-j-1]*mul[Z][i][j], curr %= mod;
+        at2[i] = curr;
+        //w<< i s curr<<e;
+    }
+    For (i, 0, M) at[i] = at2[i];
+    //For (i, M, N) at[i] = 0;
+}
+void mov(int Z) {
+    For (z, 0, 61) {
+        if (Z & two[z]) {
+            shift(z);
+            //w<< (1 << z) <<e;
+            //For (i, 0, 16) w<< at[i]<< " "; w<<e;
+        }
+    }
+}
+
+main() {
+    //ifstream cin("test.in");
+    cin >> N >> K;
+
+    two[0] = 1;
+    For (i, 1, 61) two[i] = two[i-1]*2;
+    //For (i, 0, 61) w<< two[i]<<e;
+
+    ffi {
+        cin >> inp[i][0] >> inp[i][1] >> inp[i][2];
+        M = inp[i][2]+1;
+        if (inp[i][0] > K) break;
+        inp[i][1] = min(inp[i][1], K);
+
+        For (a, 0, 61) For (b, 0, M) For (c, 0, M) mul[a][b][c] = 0;
+        For (a, M, 16) at[a] = 0;
+
+        set_0();
+        set_all();
+        mov(inp[i][1]-inp[i][0]);
+    }
+    /*For (at, 0, 3) {
+        for (int i=M-1; i>=0; i--) {
+            For (j, 0, M) {
+                w<< mul[at][i][j]<< " ";
+            }
+            w<<e;
+        }
+        w<<e;
+    }*/
+
+    w<< at[0] <<e;
+}

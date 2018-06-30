@@ -1,0 +1,50 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(ll i=a; i<b; i++)
+//500,000,000 operations
+
+//Global Variables
+int N, a;
+bool zero = false;
+
+int main() {
+	//ifstream cin ("test.in");
+	//ofstream cout ("test.out");
+	
+	cin >> N;
+	
+	if (N == 1) {
+		cin >> a;
+		if (a == 1) {
+			cout << "YES" << endl;
+		}
+		else {
+			cout << "NO" << endl;
+		}
+		return 0;
+	}
+	else {
+		
+		For (i, 0, N) {
+			cin >> a;
+			if (a == 0) {
+				if (zero) {
+					cout << "NO" << endl;
+					return 0;
+				}
+				zero = true;
+			}
+		}
+	}
+
+	if (zero) {
+		cout << "YES" << endl;
+	}
+	else {
+		cout << "NO" << endl;
+	}
+	
+	return 0;
+}
+

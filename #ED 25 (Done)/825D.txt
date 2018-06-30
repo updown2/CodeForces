@@ -1,0 +1,51 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define pf push_front
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+///Global Variables
+int N, M, co[26], have = 0, out = 0, ex[26];
+string inp1, inp2;
+
+void leave() {
+    ex[25] = 1000000;
+    ffi if (inp1[i] == '?') {
+        For (j, 0, 26) if (ex[j] > 0) {
+            ex[j]--;
+            inp1[i] = j+'a';
+            break;
+        }
+    }
+    w<< inp1<<e;
+    exit(0);
+}
+
+main() {
+    //ifstream cin("test.in");
+    cin >> inp1 >> inp2;
+    N = inp1.length();
+    M = inp2.length();
+    ffi {
+        if (inp1[i] == '?') have++;
+        else co[inp1[i]-'a']++;
+    }
+    while (true) {
+        ffj {
+            int val = inp2[j]-'a';
+            if (co[val]>0) co[val]--;
+            else if (have > 0) have--, ex[val]++;
+            else leave();
+        }
+    }
+}

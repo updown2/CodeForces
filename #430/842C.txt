@@ -1,0 +1,62 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, N)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+//#define int ll
+const int MAXN = 200000;
+///500,000,000
+int N, a[MAXN], out[MAXN], par[MAXN];
+vector<int> adj[MAXN];
+set<int> lef[MAXN];
+set<int>::iterator it;
+
+int gcd(int a, int b) { return a==0 ? b:gcd(b%a, a); }
+
+void go(int at, int up, int run) {
+	par[at] = up;
+	if (at == 0) {
+		lef[0].insert(a[0]);
+		lef[0].insert(0);
+	}
+	else {
+		for (it = lef[up].begin(); it!= lef[up].end(); it++) {
+			lef[at].insert(gcd(a[at], (*it)));
+		}
+	}
+	lef[at].insert(run);
+	it = lef[at].end(); it--;
+	out[at] = *(it);
+	run = gcd(run, a[at]);
+	
+	For (i, 0, adj[at].size()) {
+		int x = adj[at][i];
+		if (x != up) go(x, at, run);
+	}
+}
+
+int main () {
+	//ifstream cin("test.in");
+    ios_base::sync_with_stdio(0); cin.tie(0);
+	cin >> N;
+	ffi cin >> a[i];
+	For (i, 1, N) {
+		int a, b; cin >> a >> b; a--; b--;
+		adj[a].pb(b);
+		adj[b].pb(a);
+	}
+	go(0, -1, 0);
+	
+	//ffi {for (it = lef[i].begin(); it != lef[i].end(); it++) w<< (*it)<< " "; w<<e;}
+	
+	ffi w<<out[i] <<" "; w<<e;
+}

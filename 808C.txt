@@ -1,0 +1,48 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, K)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e endl
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+//500,000,000 operations
+//Global Variables
+ll N, W;
+ll inp[100];
+ll put[100];
+
+void red() {
+    int loc = 0; ll am = 0;
+    ffi {
+        if (inp[i] > am && put[i] != inp[i]) {
+            loc = i;
+            am = inp[i];
+        }
+    }
+    ll inc = min(inp[loc]-put[loc], W);
+    put[loc] += inc;
+    W -= inc;
+}
+
+int main() {
+	//ifstream cin ("test.in");
+    cin >> N >> W;
+    ffi {
+        cin >> inp[i];
+        put[i] = (inp[i]+1)/2;
+        W -= put[i];
+    }
+    if (W < 0) {w<<-1<<e; return 0;}
+    while (W > 0) {
+        red();
+    }
+    For (i, 0, N-1) w<< put[i]<< " ";
+    w<< put[N-1]<<e;
+}

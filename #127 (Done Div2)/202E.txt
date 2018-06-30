@@ -1,0 +1,43 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, K)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e endl
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+//500,000,000 operations
+//Global Variables
+int N, inp[100000], lef[100000], rig[100000], odd[100000], cur[100000];
+
+///cost from i to j = lef[i]-odd[i] + rig[j]+od[j]
+
+main() {
+    //ifstream cin ("test.in");
+    //freopen ("test.in","r",stdin);
+    cin >> N; For (i, 0, N-1) cin >> inp[i];
+    ffi lef[i] = rig[i] = odd[i] = cur[i] = 0;
+    For (i, 0, N-1) {
+        if (inp[i] != 1) lef[i+1] = 2* (inp[i]/2) + lef[i];
+        else lef[i+1] = 0;
+    }
+    for (int i=N-2; i>=0; i--) {
+        if (inp[i] != 1) rig[i] = rig[i+1] + 2*(inp[i]/2);
+        else rig[i] = 0;
+    }
+    For (i, 0, N-1) odd[i+1] = odd[i]+ 2*( (inp[i]-1)/2 )+1;
+    int out = 0;
+    For (i, 1, N) {
+        cur[i] = max(cur[i-1], lef[i]-odd[i]);
+        out = max(out, cur[i]+rig[i]+odd[i]);
+    }
+    //ffi w<< i s ":" s lef[i] s rig[i] s odd[i] s cur[i]<<e;
+    w<< out<<e;
+}

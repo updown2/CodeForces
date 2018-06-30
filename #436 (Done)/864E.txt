@@ -1,0 +1,68 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+const int MAXN=100, INF=9000000000000000000;
+///500,000,000
+int N, out, dp[MAXN+1][2001], s1, s2, path[MAXN+1][2001];
+
+struct Point {int tim, burn, val, ind;} inp[MAXN];
+
+bool acompare(Point a, Point b) { return a.burn < b.burn; }
+
+main() {
+    //ifstream cin("test.in");
+    ios_base::sync_with_stdio(0); cin.tie(0);
+    cin >> N;
+    ffi {
+        cin >> inp[i].tim >> inp[i].burn >> inp[i].val;
+        inp[i].ind=i+1;
+    }
+    sort(inp, inp+N, acompare);
+    //ffi w<< inp[i].burn<<e;
+    For (i, 0, N+1) For (j, 0, 2001) dp[i][j] = 0, path[i][j] = j;
+    For (i, 0, N+1) dp[i][0] = 0;
+    ffi {
+        For (j, 0, 2000) {
+            if (j+inp[i].tim < inp[i].burn) {
+                if (dp[i+1][j+inp[i].tim] < dp[i][j]+inp[i].val) {
+                    dp[i+1][j+inp[i].tim] = dp[i][j]+inp[i].val;
+                    path[i+1][j+inp[i].tim] = j;
+                }
+
+                if (out < dp[i+1][j+inp[i].tim]) {
+                    out = dp[i+1][j+inp[i].tim];
+                    s1 = i+1; s2 = j+inp[i].tim;
+                }
+
+                //w<< dp[i][j]+inp[i].val<<e;
+            }
+            if (dp[i+1][j] < dp[i][j]) {
+                dp[i+1][j] = dp[i][j];
+                path[i+1][j] = j;
+                //w<< dp[i][j]+inp[i].val<<e;
+            }
+        }
+    }
+    w<< out<<e;
+    vector<int> ans;
+    int at = s2;
+    for (int i=s1; i>=1; i--) {
+        if (path[i][at] != at) ans.pb(inp[i-1].ind), at=path[i][at];
+    }
+    w<< ans.size()<<e;
+    reverse(ans.begin(), ans.end());
+    for (int i:ans) w<< i<<" ";
+    w<<e;
+}

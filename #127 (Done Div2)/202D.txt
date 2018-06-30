@@ -1,0 +1,46 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e endl
+#define int ll
+//Global Variables
+int N, M, inp[1000][1000];
+int sum_x[1000], sum_y[1000], sum_row[1000], sum_col[1000];
+int out, ox, oy;
+
+main() {
+    //ifstream cin("test1.in");
+    //freopen ("test2.in","r",stdin);
+    scanf(" %I64d %I64d", &N, &M); ffa scanf(" %I64d", &inp[i][j]);
+    ffi {sum_row[i] = 0; ffj sum_row[i] += inp[i][j];}
+    ffj {sum_col[j] = 0; ffi sum_col[j] += inp[i][j];}
+
+    For (k, 0, N) {
+        sum_x[k] = 0;
+        ffi {
+            sum_x[k] += sum_row[i]*(4*i+2-4*k)*(4*i+2-4*k);
+        }
+    }
+    For (k, 0, M) {
+        sum_y[k] = 0;
+        ffj {
+            sum_y[k] += sum_col[j]*(4*j+2-4*k)*(4*j+2-4*k);
+        }
+    }
+    //ffi {ffj w<< sum_x[i]+sum_y[j]<< " "; w<<e;}
+    out = sum_x[0]+sum_y[0]; ox = 0; oy = 0;
+    ffa {
+        if (sum_x[i]+sum_y[j] < out) {
+            out = sum_x[i]+sum_y[j];
+            ox = i;
+            oy = j;
+        }
+    }
+    w<< out<<e<< ox s oy<<e;
+}

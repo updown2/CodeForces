@@ -1,0 +1,68 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(ll i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+//#define ll ll
+//500,000,000 operations
+const int MAXN = 5000;
+//Global Variables
+int N, cnt[26];
+double out;
+string all[MAXN];
+set<char> have;
+set<char>::iterator it;
+string in;
+
+double good (char a) {
+	//w<< a << ": ";
+	int at = 0;
+	ffi if (in[i] == a) {
+		all[at] = in.substr(i) + in.substr(0, i);
+		//w<< all[at]<<e;
+		at++;
+	}
+	// one position must be all different
+	//w<< at<<e;
+	
+	double ret = 0;
+	ffi {
+		For (j, 0, 26) cnt[j] = 0;
+		//w<< i s ":";
+		For (j, 0, at) {
+			//w<< all[j][i]<< " ";
+			cnt[all[j][i]-'a'] ++;
+		}
+		//w<<e;
+		int have = 0;
+		For (i, 0, 26) if (cnt[i] == 1) have++;
+		ret = max(ret, have/(double)at);
+	}
+	//w<< ret<<e;
+	return ret;
+}
+
+int main() {
+	//ifstream cin ("test.in");
+	ios_base::sync_with_stdio; cin.tie(0);
+	w<< fixed<<setprecision(7);
+	cin >> in; N = in.length();
+	ffi have.insert(in[i]);
+	for (it = have.begin(); it != have.end(); it++) {
+		char a = (*it);
+		int cnt = 0;
+		ffi {if (in[i] == a) cnt++;}
+		double x = good(a);
+		if (x > .0000001) out += x*cnt;
+	}
+	w<< out / (double)N <<e;
+}

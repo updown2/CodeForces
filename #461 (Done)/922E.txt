@@ -1,0 +1,51 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, M)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+//#define int ll
+//500,000,000 operations
+//Global Variables
+const ll MAXN = 1000, MAXC = 10001;
+ll N, W, B, X, dp[MAXN][MAXC], C[MAXN], cost[MAXN];
+int up;
+
+
+int main() {
+	//ifstream cin ("test.in");
+	ios_base::sync_with_stdio; cin.tie(0);
+	cin >> N >> W >> B >> X;
+	ffi cin >> C[i];
+	ffi cin >> cost[i];
+	
+	For (i, 0, N) For (j, 0, MAXC) dp[i][j] = -100000000;
+	dp[0][0] = W;
+	For (i, 1, min(MAXC, C[0]+1)) if (dp[0][0]-cost[0]*i >= 0) {
+		dp[0][i] = dp[0][0]-cost[0]*i;
+		up = max(up, i);
+	}
+	
+	For (i, 1, N) {
+		for (int j = up; j>=0; j--) {
+			dp[i][j] = max(dp[i][j], min(dp[i-1][j]+X, W + j*B));
+			
+			For (k, 1, min(MAXC, C[i]+1)) if (dp[i][j]-cost[i]*k >= 0) {
+				dp[i][j+k] = max(dp[i][j+k], dp[i][j]-cost[i]*k);
+				up = max(up, j+k);
+			}
+		}
+	}
+	
+	
+	//For (i, 0, N) {For (j, 0, 8) w<<dp[i][j] << " ";w<<e;}
+	w << up<<e;
+}

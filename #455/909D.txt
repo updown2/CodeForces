@@ -1,0 +1,78 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, N)
+#define ffa ffi ffj
+#define s <<" "<<
+#define w cout
+#define e "\n"
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+const int MAXN=1000000, INF=1000000000000000000;
+///500,000,000
+int N, cnt[MAXN], at, out;
+char now[MAXN];
+string in;
+set<pair<int, pair<int, int> > > have;
+set<pair<int, pair<int, int> > >::iterator it, it1;
+pair<int, pair<int, int> > use;
+
+main() {
+    //ifstream cin("test.in");//ofstream cout("cbs.out");
+    ios_base::sync_with_stdio(0); cin.tie(0);
+    cin >> in; N = in.length();
+    now[0] = in[0], cnt[0] = 1;
+    For (i, 1, N) {
+        if (in[i] == now[at]) cnt[at]++;
+        else {
+            have.insert(mp(at, mp(cnt[at], now[at]-'a')));
+            at++;
+            now[at] = in[i];
+            cnt[at] = 1;
+        }
+    }
+    have.insert(mp(at, mp(cnt[at], now[at]-'a')));
+    while (have.size() > 1) {
+        //for (it = have.begin(); it != have.end(); it++) w<< (*it).a s (*it).b.a s (*it).b.b<<e;w<<e;
+        vector<pair<int, pair<int, int> > > cng;
+        it = have.begin(); use = (*it); use.b.a--;
+        if (use.b.a != 0) cng.pb(use);
+        it++;
+
+        it1 = have.end(); it1--;
+        if (have.size() > 2) {
+            for (it; it != it1; it++) {
+                use = (*it); use.b.a-=2;
+//printf("%I64d %I64d %I64d\n", use.a, use.b.a, use.b.b);
+                if (use.b.a > 0) {
+                    if (cng.size() > 0 && use.b.b == cng[cng.size()-1].b.b) {
+                        cng[cng.size()-1].b.a += use.b.a;
+                    }
+                    else cng.pb(use);
+                }
+            }
+        }
+
+        use = (*it1); use.b.a--;
+        if (use.b.a != 0) {
+            if (cng.size() > 0 && use.b.b == cng[cng.size()-1].b.b) {
+                cng[cng.size()-1].b.a += use.b.a;
+            }
+            else cng.pb(use);
+        }
+
+        have.clear();
+
+        for (pair<int, pair<int, int> > i: cng) {
+            have.insert(i);
+            //printf("%I64d %I64d %I64d\n", i.a, i.b.a, i.b.b);
+        }//printf("\n");
+        out++;
+    }
+    w<< out<<e;
+}

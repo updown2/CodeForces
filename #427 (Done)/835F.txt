@@ -1,0 +1,139 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+#define For(i, a, b) for(int i=a; i<b; i++)
+#define ffi For(i, 0, N)
+#define ffj For(j, 0, K)
+#define s <<" "<<
+#define w cout
+#define e endl
+#define pb push_back
+#define mp make_pair
+#define a first
+#define b second
+#define int ll
+//Global Variables
+vector<pair<int, int> > adj[200000]; bool cyc[200000], vis[200000], vis2[200000];
+queue<int> rem;
+set<pair<int, int> > adj2[200000]; set<pair<int, int> >::iterator it;
+int dep_old[200000], dep[200000], wid[200000], pre_far[200000], suf_far[200001];
+int N, K, pre_diam[200000], suf_diam[200001];
+
+int calc_dep(int at) {
+    if (vis[at]) return -1;
+    vis[at] = true;
+    int out = 0;
+    for (pair<int, int> use: adj[at]) {
+        int i = use.a, c = use.b;
+        int b = calc_dep(i);
+        if (b != -1) out = max(out, b+c);
+    }
+    return out;
+}
+void set_up(int at) {
+    if (vis[at]) return;
+    vis[at] = true;
+    int loc = K;
+    it = adj2[at].begin(); it++;
+
+    if (vis[(*it).a]) it--;
+
+    dep[K] = dep_old[at];
+    wid[K] = (*it).b;
+    K++;
+    set_up((*it).a);
+}
+int best, node;
+void dfs1(int at, int low) {
+    if (vis[at]) return;
+    vis[at] = true;
+    if (low > best) best =low, node=at;
+    for (pair<int, int> use: adj[at]) {
+        int i = use.a, c = use.b;
+        dfs1(i, low+c);
+    }
+}
+
+void dfs2(int at, int low) {
+    if (vis2[at]) return;
+    vis2[at] = true;
+    if (low > best) best =low, node=at;
+    for (pair<int, int> use: adj[at]) {
+        int i = use.a, c = use.b;
+        dfs2(i, low+c);
+    }
+}
+
+int path(int root) {
+    best = 0;
+    vis[root] = vis2[root] = false;
+    dfs1(root, 0);
+    best = 0;
+    dfs2(node, 0);
+    return best;
+}
+
+main() {
+	//ifstream cin ("test.in");
+	cin >> N;
+	ffi {
+        int a, b, c; cin >> a >> b >> c; a--; b--;
+        adj2[a].insert(mp(b, c)), adj2[b].insert(mp(a, c));
+        adj[a].pb(mp(b, c)), adj[b].pb(mp(a, c));
+
+	}
+	ffi if (adj2[i].size() == 1) rem.push(i);
+	while (!rem.empty()) {
+        int at = rem.front(); rem.pop();
+        if (adj2[at].size() == 0) continue;
+        pair<int, int> use = (*adj2[at].begin());
+        adj2[at].erase(use); adj2[use.a].erase(mp(at, use.b));
+        if (adj2[use.a].size()==1) rem.push(use.a);
+	}
+	ffi if (adj2[i].size() != 0) cyc[i] = vis[i] = true;
+	ffi if (cyc[i]) {
+        vis[i] = false;
+        dep_old[i] = calc_dep(i);
+        vis[i] = true;
+	}
+	//ffi if (cyc[i]) w<< dep_old[i]<< " "; w<<e;
+	ffi cyc[i] ? vis[i] = false: vis[i] = true;
+	ffi if (cyc[i]) {
+	    set_up(i);
+	    break;
+	}
+//ffj w<< dep[j] s wid[j]<<e;
+	pre_far[0] = pre_diam[0] = dep[0];
+	int sum1 = 0;
+	int sum2 = 0;
+	For (i, 1, K) {
+        sum1 += wid[i-1];
+        pre_far[i] = max(pre_far[i-1], sum1+dep[i]);
+
+        sum2 = max(sum2, dep[i-1]) + wid[i-1];
+        pre_diam[i] = max(pre_diam[i-1], sum2+dep[i]);
+	}
+	///ffj w<< pre_far[j] s pre_diam[j]<<e;
+	sum1 = 0;
+	sum2 = 0;
+	for (int i=K-1; i >= 0; i--) {
+        sum1 += wid[i];
+        suf_far[i] = max(suf_far[i+1], sum1+dep[i]);
+
+        sum2 = max(sum2, dep[i+1])+wid[i];
+        suf_diam[i] = max(suf_diam[i+1], sum2+dep[i]);
+	}
+	///ffj w<< suf_far[j] s suf_diam[j]<<e;
+	int out = max(pre_diam[0], max(suf_diam[1], pre_far[0]+suf_far[1]));
+	For (i, 0, K) {
+	    int use = max(pre_diam[i], max(suf_diam[i+1], pre_far[i]+suf_far[i+1]));
+        out = min(out, use);
+        //w<< use<<e;
+	}
+
+	ffi cyc[i] ? vis[i] = vis2[i] = true : vis[i] = vis2[i] = false;
+	ffi if (cyc[i]) {
+        out = max(out, path(i));
+	}
+	w<< out<<e;
+}
